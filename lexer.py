@@ -1,4 +1,9 @@
 from constantes import OPERADORES_SIMPLES, OPERADORES_DOBLES
+class token:
+    def __init__(self, tipo, valor):
+        self.tipo = tipo
+        self.valor = valor
+
 class Lexer:
     def __init__(self, texto):
         self.texto = texto
@@ -31,17 +36,19 @@ class Lexer:
                 buffer = "0" + buffer
             elif buffer[-1] == ".":
                 buffer += "0"
-            return float(buffer)
-        return int(buffer)
+            return token("NUMERO", float(buffer))
+        return token("NUMERO",int(buffer))
 
     def leer_simbolo(self):
         if self.pos < self.limite:
             if self.pos < self.limite - 1 and self.peek() + self.peek(1) in OPERADORES_DOBLES:
-                operador = self.advance()
-                operador += self.advance()
+                valor_token = self.advance()
+                valor_token += self.advance()
+                tipo_token = OPERADORES_DOBLES[valor_token]
             else:
-                operador = self.advance()
-            return operador
+                valor_token = self.advance()
+                tipo_token = OPERADORES_SIMPLES[valor_token]
+            return token(tipo_token, valor_token)
 
     def tokenizar(self):
         tokens  = [] 

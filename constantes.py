@@ -10,5 +10,18 @@ OPERACIONES = {
     "+" : lambda x, y: x + y
 } 
 
-OPERADORES_SIMPLES = {"+", "-", "*", "/", "%", "$"}
-OPERADORES_DOBLES = {"//", "**"}
+OPERADORES_SIMPLES = {
+    "+"  : "SUMA",
+    "-"  : "RESTA",
+    "*"  : "MULTI",
+    "/"  : "DIV",
+    "$"  : "RAIZ_ENESIMA",
+    "%"  : "MOD",
+    "("  : "PAREN_IZQ",
+    ")"  : "PAREN_DER",
+}
+
+OPERADORES_DOBLES = {
+    "**" : "POTENCIA",
+    "//" : "DIV_ENTERA",
+}
