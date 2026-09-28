@@ -17,3 +17,11 @@ class NodoNumero:
 
     def evaluar(self):
         return self.valor
+
+class NodoPositivo(NodoNumero):
+    def evaluar(self):
+        return self.valor.evaluar()
+    
+class NodoNegativo(NodoNumero):
+    def evaluar(self):
+        return -self.valor.evaluar()

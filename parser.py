@@ -1,4 +1,4 @@
-from nodos import NodoBinario, NodoNumero
+from nodos import NodoBinario, NodoNumero, NodoPositivo, NodoNegativo
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -6,7 +6,7 @@ class Parser:
         self.pos = 0
 
     def levantar_error(self, mensaje, pasos=0):
-        raise Exception(f"Error: {mensaje}: Token: {self.peek(pasos)}")
+        raise Exception(f"Error: {mensaje}: Token: {self.peek(pasos).valor}")
     
     def advance(self):
         if self.pos < self.limite:
@@ -28,7 +28,7 @@ class Parser:
         self.levantar_error(mensaje_error)    
 
     def parsear(self):
-        if self.match("Fin"):
+        if self.match("FIN"):
             self.levantar_error("Error: Expresión vacia")
 
         arbol = self.expr()
@@ -69,6 +69,15 @@ class Parser:
             self.consumir("PAREN_DER", "No cerraste un paréntesis")
             return nodo
         
+        if self.match("SUMA") or self.match("RESTA"):
+            operador = self.advance()
+            if self.match("SUMA") or self.match("RESTA"):
+                self.levantar_error("Operador repetido")
+            if operador.tipo == "SUMA":
+                return NodoPositivo(self.power())
+            else:
+                return NodoNegativo(self.power())
+            
         if self.match("NUMERO"):
             token = self.advance()
             return NodoNumero(token.valor)

@@ -15,10 +15,7 @@ def main() -> None:
             parser = Parser(tokens)
             arbol = parser.parsear()
             resultado = arbol.evaluar()
-            if resultado == None:
-                print()
-            else:
-                print(resultado)
+            print(resultado)
         except Exception as error:
             print(error)     
         pausa()
