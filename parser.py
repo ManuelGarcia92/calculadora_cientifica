@@ -31,12 +31,12 @@ class Parser:
         if self.match("Fin"):
             self.levantar_error("Error: Expresión vacia")
 
-        instrucion = self.expr()
+        arbol = self.expr()
 
         if self.peek() and not self.match("FIN"):
             self.levantar_error("Quedan tokens sin procesar")
 
-        return instrucion
+        return arbol
 
     def expr(self):
         nodo = self.term()

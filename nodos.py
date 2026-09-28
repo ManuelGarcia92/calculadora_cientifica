@@ -12,9 +12,8 @@ class NodoBinario:
         return resultado
 
 class NodoNumero:
-    def __inir__(self, valor):
+    def __init__(self, valor):
         self.valor = valor
 
     def evaluar(self):
-        return self.valor.evaluar()
-    
+        return self.valor

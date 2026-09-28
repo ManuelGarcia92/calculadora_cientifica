@@ -37,7 +37,7 @@ class Lexer:
             elif buffer[-1] == ".":
                 buffer += "0"
             return token("NUMERO", float(buffer))
-        return token("NUMERO",int(buffer))
+        return token("NUMERO", int(buffer))
 
     def leer_simbolo(self):
         if self.pos < self.limite:
@@ -61,8 +61,8 @@ class Lexer:
             elif char_actual in OPERADORES_SIMPLES:
                 tokens.append(self.leer_simbolo())
             else:
-                raise Exception("Error:Caracter desconocido")
+                raise Exception("Error: Caracter desconocido")
             
-        tokens.append("FIN")
+        tokens.append(token("FIN", None))
         return tokens
 
