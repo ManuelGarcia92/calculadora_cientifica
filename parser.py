@@ -30,12 +30,9 @@ class Parser:
     def parsear(self):
         if self.match("FIN"):
             self.levantar_error("Error: Expresión vacia")
-
         arbol = self.expr()
-
         if self.peek() and not self.match("FIN"):
             self.levantar_error("Quedan tokens sin procesar")
-
         return arbol
 
     def expr(self):
