@@ -1,4 +1,4 @@
-from nodos import NodoBinario, NodoNumero, NodoPositivo, NodoNegativo
+from nodos import NodoBinario, NodoNumero, NodoPositivo, NodoNegativo, NodoAsignacion, NodoIdentificador
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -28,12 +28,40 @@ class Parser:
         self.levantar_error(mensaje_error)    
 
     def parsear(self):
+        instrucciones = []
         if self.match("FIN"):
-            self.levantar_error("Error: Expresión vacia")
-        arbol = self.expr()
+            raise Exception("Expresión vacia")
+        
+        while not self.match("FIN"):
+            instrucciones.append(self.parsear_instrucciones())
+            if self.match("PUNTO_Y_COMA"):
+                self.advance()
+
         if self.peek() and not self.match("FIN"):
             self.levantar_error("Quedan tokens sin procesar")
-        return arbol
+
+        return instrucciones
+    
+    def parsear_instrucciones(self):
+        if self.match("VAR"):
+            self.advance()
+            return self.parsear_asignaciones()
+        else:
+            return self.expr()
+        
+    def parsear_asignaciones(self):
+        asignaciones = []
+        token_id = self.consumir("IDENTIFICADOR", "nombre_variable")
+        self.consumir("ASIGNACION", "signo_asignación")
+        token_valor = self.expr()
+        return  NodoAsignacion(token_id.valor, token_valor)
+        pass 
+        asignaciones.append(nodo_asignacion)
+        while self.match("PUNTO_Y_COMA"):
+            self.advance()
+            nodo_asignacion = self.parsear_instrucciones()
+            asignaciones.append(nodo_asignacion)
+        return asignaciones
 
     def expr(self):
         nodo = self.term()
@@ -70,10 +98,14 @@ class Parser:
             operador = self.advance()
             if self.match("SUMA") or self.match("RESTA"):
                 self.levantar_error("Operador repetido")
-            if operador.tipo == "SUMA":
+            elif operador.tipo == "SUMA":
                 return NodoPositivo(self.power())
             else:
                 return NodoNegativo(self.power())
+            
+        if self.match("IDENTIFICADOR"):
+           token_id = self.advance()
+           return NodoIdentificador(token_id.valor)
             
         if self.match("NUMERO"):
             token = self.advance()

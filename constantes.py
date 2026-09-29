@@ -9,6 +9,9 @@ OPERACIONES = {
     "-" : lambda x, y: x - y,
     "+" : lambda x, y: x + y
 } 
+PALABRAS_RESERVADAS = {
+    "var"    : "VAR",
+}
 
 OPERADORES_SIMPLES = {
     "+"  : "SUMA",
@@ -19,6 +22,8 @@ OPERADORES_SIMPLES = {
     "%"  : "MOD",
     "("  : "PAREN_IZQ",
     ")"  : "PAREN_DER",
+    "="  : "ASIGNACION",
+    ";"  : "PUNTO_Y_COMA",
 }
 
 OPERADORES_DOBLES = {

@@ -1,8 +1,11 @@
 from extras import limpiar_terminal, pausa
+from tabla_de_simbolos import TablaDeSimbolos
 from lexer import Lexer 
 from parser import Parser
+from evaluador import Evaluador
 
 def main() -> None:
+    memoria = TablaDeSimbolos()
     while True:
         limpiar_terminal()
         print("[Ingrese break para salir]")
@@ -14,8 +17,12 @@ def main() -> None:
             tokens = lexer.tokenizar()
             parser = Parser(tokens)
             arbol = parser.parsear()
-            resultado = arbol.evaluar()
-            print(resultado)
+            evaluador = Evaluador(arbol)
+            resultado = evaluador.evaluar(memoria)
+            if resultado == None:
+                print()
+            else:
+                print(resultado)
         except Exception as error:
             print(error)     
         pausa()
