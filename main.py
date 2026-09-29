@@ -8,7 +8,8 @@ def main() -> None:
     memoria = TablaDeSimbolos()
     while True:
         limpiar_terminal()
-        print("[Ingrese break para salir]")
+        print("Ingrese break para salir.")
+        memoria.imprimir_memoria()
         texto = input(">>> : ")
         if texto == "break":
             break
