@@ -29,6 +29,7 @@ class Parser:
 
     def parsear(self):
         instrucciones = []
+        
         if self.match("FIN"):
             raise Exception("Expresión vacia")
         
@@ -45,22 +46,9 @@ class Parser:
     def parsear_instrucciones(self):
         if self.match("VAR"):
             self.advance()
-            return self.parsear_asignaciones()
+            return self.parsear_asignacion_de_variables()
         else:
             return self.expr()
-        
-    def parsear_asignaciones(self):
-        asignaciones = []
-        token_id = self.consumir("IDENTIFICADOR", "nombre_variable")
-        self.consumir("ASIGNACION", "signo_asignación")
-        token_valor = self.expr()
-        nodo_asignacion = NodoAsignacion(token_id.valor, token_valor) 
-        asignaciones.append(nodo_asignacion)
-        while self.match("PUNTO_Y_COMA"):
-            self.advance()
-            nodo_asignacion = self.parsear_asignaciones()
-            asignaciones.extend(nodo_asignacion)
-        return asignaciones
 
     def expr(self):
         nodo = self.term()
@@ -88,19 +76,10 @@ class Parser:
 
     def factor(self):
         if self.match("PAREN_IZQ"):
-            self.advance()
-            nodo = self.expr()
-            self.consumir("PAREN_DER", "No cerraste un paréntesis")
-            return nodo
+           return self.parsear_parentesis()
         
         if self.match("SUMA") or self.match("RESTA"):
-            operador = self.advance()
-            if self.match("SUMA") or self.match("RESTA"):
-                self.levantar_error("Operador repetido")
-            elif operador.tipo == "SUMA":
-                return NodoPositivo(self.power())
-            else:
-                return NodoNegativo(self.power())
+            return self.parsear_numeros_negativos_y_positivos()
             
         if self.match("IDENTIFICADOR"):
            token_id = self.advance()
@@ -111,3 +90,29 @@ class Parser:
             return NodoNumero(token.valor)
 
         self.levantar_error("Esperaba un número")
+
+    def parsear_parentesis(self):
+        self.advance()
+        nodos = self.expr()
+        self.consumir("PAREN_DER", "No cerraste un paréntesis")
+        return nodos
+    
+    def parsear_numeros_negativos_y_positivos(self):
+        operador = self.advance()
+        if self.match("SUMA") or self.match("RESTA"):
+            self.levantar_error("Operador repetido")
+        elif operador.tipo == "SUMA":
+            return NodoPositivo(self.power())
+        else:
+            return NodoNegativo(self.power())
+        
+    def parsear_asignacion_de_variables(self):
+        asignaciones = []
+        token_id = self.consumir("IDENTIFICADOR", "Falta el nombre de la variable")
+        self.consumir("ASIGNACION", "Falta el signo de asignación : = ")
+        nodos = self.expr()
+        asignaciones.append(NodoAsignacion(token_id.valor, nodos))
+        while self.match("PUNTO_Y_COMA"):
+            self.advance()
+            asignaciones.extend(self.parsear_asignacion_de_variables())
+        return asignaciones

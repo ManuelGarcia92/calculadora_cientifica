@@ -7,8 +7,8 @@ class Evaluador:
         if self.instrucciones is not None:
             for instruccion in self.instrucciones:
                 if isinstance(instruccion, list):
-                    for instruc in instruccion:
-                        resultado = instruc.evaluar(memoria)
+                    for sub_instrucion in instruccion:
+                        resultado = sub_instrucion.evaluar(memoria)
                 else:
                     resultado = instruccion.evaluar(memoria)
         return resultado
