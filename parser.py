@@ -54,13 +54,12 @@ class Parser:
         token_id = self.consumir("IDENTIFICADOR", "nombre_variable")
         self.consumir("ASIGNACION", "signo_asignación")
         token_valor = self.expr()
-        return  NodoAsignacion(token_id.valor, token_valor)
-        pass 
+        nodo_asignacion = NodoAsignacion(token_id.valor, token_valor) 
         asignaciones.append(nodo_asignacion)
         while self.match("PUNTO_Y_COMA"):
             self.advance()
-            nodo_asignacion = self.parsear_instrucciones()
-            asignaciones.append(nodo_asignacion)
+            nodo_asignacion = self.parsear_asignaciones()
+            asignaciones.extend(nodo_asignacion)
         return asignaciones
 
     def expr(self):
