@@ -20,10 +20,10 @@ def main() -> None:
             arbol = parser.parsear()
             evaluador = Evaluador(arbol)
             resultado = evaluador.evaluar(memoria)
-            if resultado == None:
-                print()
-            else:
+            if resultado:
                 print(resultado)
+            else:
+                print()
         except Exception as error:
             print(error)     
         pausa()

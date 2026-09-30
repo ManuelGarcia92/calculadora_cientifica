@@ -6,7 +6,7 @@ class Parser:
         self.pos = 0
 
     def levantar_error(self, mensaje, pasos=0):
-        raise Exception(f"Error: {mensaje}: Token: {self.peek(pasos).valor}")
+        raise Exception(f"Error: {mensaje}: Token : {self.peek(pasos).valor}")
     
     def advance(self):
         if self.pos < self.limite:
@@ -60,7 +60,7 @@ class Parser:
 
     def term(self):
         nodo = self.power()
-        while self.match("MULTI") or self.match("DIV") or self.match("DIV_ENTERA")or self.match("MOD"):
+        while self.match("MULTI") or self.match("DIV") or self.match("DIV_ENTERA") or self.match("MOD"):
             operador = self.advance()
             derecha = self.power()
             nodo = NodoBinario(operador.valor, nodo, derecha)
@@ -109,10 +109,10 @@ class Parser:
     def parsear_asignacion_de_variables(self):
         asignaciones = []
         token_id = self.consumir("IDENTIFICADOR", "Falta el nombre de la variable")
-        self.consumir("ASIGNACION", "Falta el signo de asignación : = ")
+        self.consumir("ASIGNACION", "Falta el signo de asignación = ")
         nodos = self.expr()
         asignaciones.append(NodoAsignacion(token_id.valor, nodos))
-        while self.match("PUNTO_Y_COMA"):
+        while self.match("COMA"):
             self.advance()
             asignaciones.extend(self.parsear_asignacion_de_variables())
         return asignaciones

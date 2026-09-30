@@ -23,6 +23,7 @@ OPERADORES_SIMPLES = {
     "("  : "PAREN_IZQ",
     ")"  : "PAREN_DER",
     "="  : "ASIGNACION",
+    ","  : "COMA", 
     ";"  : "PUNTO_Y_COMA",
 }
 
