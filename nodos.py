@@ -57,3 +57,14 @@ class NodoIdentificador:
 
     def evaluar(self, memoria):
         return memoria.obtener(self.nombre)
+
+class NodoEliminacion:
+    def __init__(self, clave):
+        self.clave = clave
+
+    def evaluar(self, memoria):
+        return memoria.eliminar(self.clave)
+
+class NodoLimpieza:
+    def evaluar(self, memoria):
+        return memoria.limpiar()

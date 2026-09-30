@@ -12,6 +12,13 @@ class TablaDeSimbolos:
         if not nombre in self.memoria:
             raise Exception(f"Error semántico: Variable {nombre} no esta definida.")
         return self.memoria[nombre]
+    
+    def eliminar(self, clave):
+        if clave in self.memoria:
+            del self.memoria[clave]
+            
+    def limpiar(self):
+        self.memoria.clear()
 
     def imprimir_memoria(self):
         if self.memoria:

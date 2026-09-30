@@ -1,4 +1,5 @@
-from nodos import NodoBinario, NodoNumero, NodoPositivo, NodoNegativo, NodoAsignacion, NodoIdentificador, NodoOperacion
+import nodos
+
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -47,6 +48,15 @@ class Parser:
         if self.match("VAR"):
             self.advance()
             return self.parsear_asignacion_de_variables()
+        
+        elif self.match("DEL"):
+            self.advance()
+            return self.parsear_eliminacion()
+        
+        elif self.match("CLEAR"):
+            self.advance()
+            return nodos.NodoLimpieza()
+        
         else:
             return self.expr()
 
@@ -55,7 +65,7 @@ class Parser:
         while self.match("SUMA") or self.match("RESTA"):
             operador = self.advance()
             derecha = self.term()
-            nodo = NodoBinario(operador.valor, nodo, derecha)
+            nodo = nodos.NodoBinario(operador.valor, nodo, derecha)
         return nodo
 
     def term(self):
@@ -63,7 +73,7 @@ class Parser:
         while self.match("MULTI") or self.match("DIV") or self.match("DIV_ENTERA") or self.match("MOD"):
             operador = self.advance()
             derecha = self.power()
-            nodo = NodoBinario(operador.valor, nodo, derecha)
+            nodo = nodos.NodoBinario(operador.valor, nodo, derecha)
         return nodo
 
     def power(self):
@@ -71,7 +81,7 @@ class Parser:
         if self.match("POTENCIA") or self.match("RAIZ_ENESIMA"):
             operador = self.advance()
             derecha = self.power()
-            nodo = NodoBinario(operador.valor, nodo, derecha)
+            nodo = nodos.NodoBinario(operador.valor, nodo, derecha)
         return nodo
 
     def factor(self):
@@ -83,49 +93,51 @@ class Parser:
             
         if self.match("IDENTIFICADOR"):
            token_id = self.advance()
-           return NodoIdentificador(token_id.valor)
+           return nodos.NodoIdentificador(token_id.valor)
         
         if self.match("OPC"):
             operador = self.advance()
             argumentos = self.parsear_argumentos()
-            return NodoOperacion(operador.valor, argumentos)
+            return nodos.NodoOperacion(operador.valor, argumentos)
         
         if self.match("NUMERO"):
             token = self.advance()
-            return NodoNumero(token.valor)
+            return nodos.NodoNumero(token.valor)
 
         self.levantar_error("Esperaba un número")
 
     def parsear_parentesis(self):
         self.advance()
-        nodos = self.expr()
+        nodo = self.expr()
         self.consumir("PAREN_DER", "No cerraste un paréntesis")
-        return nodos
+        return nodo
     
     def parsear_numeros_negativos_y_positivos(self):
         operador = self.advance()
         if self.match("SUMA") or self.match("RESTA"):
             self.levantar_error("Operador repetido")
         elif operador.tipo == "SUMA":
-            return NodoPositivo(self.power())
+            return nodos.NodoPositivo(self.power())
         else:
-            return NodoNegativo(self.power())
+            return nodos.NodoNegativo(self.power())
         
     def _parsear_una_asignacion(self):
         token_id = self.consumir("IDENTIFICADOR", "Falta el nombre de la variable")
         self.consumir("ASIGNACION", "Falta el signo de asignación = ")
-        nodos = self.expre()
-        return NodoAsignacion(token_id.valor, nodos)
+        nodo = self.expr()
+        return nodos.NodoAsignacion(token_id.valor, nodo)
 
     def parsear_asignacion_de_variables(self):
         asignacion = [self._parsear_una_asignacion()]
-     
         while self.match("COMA"):
            self.advance()
            asignacion.append(self._parsear_una_asignacion())
-       
         self.consumir("PUNTO_Y_COMA", "Se debe finalizar la asignación de variables con ; ")
         return asignacion 
+    
+    def parsear_eliminacion(self):
+        token_id = self.consumir("IDENTIFICADOR", "Falta el nombre de la variable que desea eliminar")
+        return nodos.NodoEliminacion(token_id.valor)
 
     def parsear_argumentos(self):
         argumentos = []

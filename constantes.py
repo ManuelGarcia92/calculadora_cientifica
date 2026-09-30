@@ -24,15 +24,17 @@ OPERACIONES_CIENTIFCAS = {
 }
 
 PALABRAS_RESERVADAS = {
-    "var"  : "VAR",
-    "abs"  : "OPC",
-    "asin" : "OPC",
-    "cos"  : "OPC",
-    "acos" : "OPC",
-    "tan"  : "OPC",
-    "atan" : "OPC",
-    "log"  : "OPC",
-    "logn" : "OPC"
+    "var"   : "VAR",
+    "del"   : "DEL",
+    "clear" : "CLEAR",
+    "abs"   : "OPC",
+    "asin"  : "OPC",
+    "cos"   : "OPC",
+    "acos"  : "OPC",
+    "tan"   : "OPC",
+    "atan"  : "OPC",
+    "log"   : "OPC",
+    "logn"  : "OPC"
 }
 
 
