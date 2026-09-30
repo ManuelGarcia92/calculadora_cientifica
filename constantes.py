@@ -1,4 +1,6 @@
 import operaciones 
+import math
+
 OPERACIONES = {
     "**": lambda x, y: x ** y,
     "$" : lambda x, y: operaciones.raiz_enesima(x, y),
@@ -9,15 +11,28 @@ OPERACIONES = {
     "-" : lambda x, y: x - y,
     "+" : lambda x, y: x + y
 } 
+
+OPERACIONES_CIENTIFCAS = {
+    "abs"  : lambda x: abs(x),
+    "asin" : lambda x: math.asin(x),
+    "cos"  : lambda x: math.cos(x),
+    "acos" : lambda x: math.acos(x),  
+    "tan"  : lambda x: math.tan(x), 
+    "atan" : lambda x: math.atan(x), 
+    "log"  : lambda x: math.log10(x), 
+    "logn" : lambda x, base: math.log(x, base), 
+}
+
 PALABRAS_RESERVADAS = {
     "var"  : "VAR",
-    #"abs"  : "ABS",
-    #"asin" : "ASIN",
-    #"cos"  : "COS",
-    #"acos" : "ACOS",
-    #"tan"  : "TAN",
-    #"atan" : "ATAN",
-    #"log"  : "LOG"
+    "abs"  : "OPC",
+    "asin" : "OPC",
+    "cos"  : "OPC",
+    "acos" : "OPC",
+    "tan"  : "OPC",
+    "atan" : "OPC",
+    "log"  : "OPC",
+    "logn" : "OPC"
 }
 
 

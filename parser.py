@@ -1,4 +1,4 @@
-from nodos import NodoBinario, NodoNumero, NodoPositivo, NodoNegativo, NodoAsignacion, NodoIdentificador
+from nodos import NodoBinario, NodoNumero, NodoPositivo, NodoNegativo, NodoAsignacion, NodoIdentificador, NodoOperacion
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -84,7 +84,12 @@ class Parser:
         if self.match("IDENTIFICADOR"):
            token_id = self.advance()
            return NodoIdentificador(token_id.valor)
-            
+        
+        if self.match("OPC"):
+            operador = self.advance()
+            argumentos = self.parsear_argumentos()
+            return NodoOperacion(operador.valor, argumentos)
+        
         if self.match("NUMERO"):
             token = self.advance()
             return NodoNumero(token.valor)
@@ -106,18 +111,23 @@ class Parser:
         else:
             return NodoNegativo(self.power())
         
-    def parsear_asignacion_de_variables(self):
-        asignaciones = []
+    def _parsear_una_asignacion(self):
         token_id = self.consumir("IDENTIFICADOR", "Falta el nombre de la variable")
         self.consumir("ASIGNACION", "Falta el signo de asignación = ")
-        nodos = self.expr()
-        asignaciones.append(NodoAsignacion(token_id.valor, nodos))
-        while self.match("COMA"):
-            self.advance()
-            asignaciones.extend(self.parsear_asignacion_de_variables())
-        return asignaciones
+        nodos = self.expre()
+        return NodoAsignacion(token_id.valor, nodos)
 
-    #def parsear_argumentos(self):
+    def parsear_asignacion_de_variables(self):
+        asignacion = [self._parsear_una_asignacion()]
+     
+        while self.match("COMA"):
+           self.advance()
+           asignacion.append(self._parsear_una_asignacion())
+       
+        self.consumir("PUNTO_Y_COMA", "Se debe finalizar la asignación de variables con ; ")
+        return asignacion 
+
+    def parsear_argumentos(self):
         argumentos = []
         self.consumir("PAREN_IZQ", "Falta el paréntesis de apertura ( en los argumentos")
         if not self.match("PAREN_DER"):
