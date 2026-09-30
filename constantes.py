@@ -10,7 +10,7 @@ OPERACIONES = {
     "+" : lambda x, y: x + y
 } 
 PALABRAS_RESERVADAS = {
-    "var"    : "VAR",
+    "var" : "VAR"
 }
 
 OPERADORES_SIMPLES = {
