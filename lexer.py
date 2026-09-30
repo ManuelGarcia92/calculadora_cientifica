@@ -1,8 +1,9 @@
 from constantes import OPERADORES_SIMPLES, OPERADORES_DOBLES, PALABRAS_RESERVADAS
 class Token:
-    def __init__(self, tipo, valor):
+    def __init__(self, tipo, valor, columna):
         self.tipo = tipo
         self.valor = valor
+        self.columna = columna
 
 class Lexer:
     def __init__(self, texto):
@@ -24,8 +25,8 @@ class Lexer:
             buffer += self.advance()
         if buffer in PALABRAS_RESERVADAS:
             tipo_token = PALABRAS_RESERVADAS[buffer]
-            return Token(tipo_token, buffer)  
-        return Token("IDENTIFICADOR", buffer) 
+            return Token(tipo_token, buffer, self.pos)  
+        return Token("IDENTIFICADOR", buffer, self.pos) 
     
     def leer_numero(self):
         contador_punto_decimal = 0
@@ -45,8 +46,8 @@ class Lexer:
                 buffer = "0" + buffer
             elif buffer[-1] == ".":
                 buffer += "0"
-            return Token("NUMERO", float(buffer))
-        return Token("NUMERO", int(buffer))
+            return Token("NUMERO", float(buffer), self.pos)
+        return Token("NUMERO", int(buffer), self.pos)
 
     def leer_simbolo(self):
         if self.pos < self.limite:
@@ -57,7 +58,7 @@ class Lexer:
             else:
                 valor_token = self.advance()
                 tipo_token = OPERADORES_SIMPLES[valor_token]
-            return Token(tipo_token, valor_token)
+            return Token(tipo_token, valor_token, self.pos)
 
     def tokenizar(self):
         tokens  = [] 
@@ -73,6 +74,6 @@ class Lexer:
                 tokens.append(self.leer_numero())  
             else:
                 raise Exception("Error: Caracter desconocido")
-        tokens.append(Token("FIN", None))
+        tokens.append(Token("FIN", None, self.pos))
         return tokens
 

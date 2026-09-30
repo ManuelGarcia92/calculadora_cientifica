@@ -6,7 +6,7 @@ class Parser:
         self.pos = 0
 
     def levantar_error(self, mensaje, pasos=0):
-        raise Exception(f"Error: {mensaje}: Token : {self.peek(pasos).valor}")
+        raise Exception(f"Error: {mensaje} : Token {self.peek(pasos).valor} : Columna {self.peek(pasos).columna}")
     
     def advance(self):
         if self.pos < self.limite:
