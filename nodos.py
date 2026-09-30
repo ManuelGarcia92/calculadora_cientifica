@@ -18,11 +18,9 @@ class NodoOperacion:
 
     def evaluar(self, memoria):
         valores = [valor.evaluar(memoria) for valor in self.argumentos]
-
         func = OPERACIONES_CIENTIFCAS.get(self.operador)
         if not func:
             raise Exception(f"Error: Operador desconocido : {self.operador}")
-
         try:
             return func(*valores)
         except TypeError:
