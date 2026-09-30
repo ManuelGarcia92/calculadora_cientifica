@@ -26,7 +26,7 @@ class NodoOperacion:
         try:
             return func(*valores)
         except TypeError:
-            raise Exception(f"Error: N;umero incorrecto de argumentos para {self.operador}")
+            raise Exception(f"Error: Número incorrecto de argumentos para {self.operador}")
 
 class NodoNumero:
     def __init__(self, valor):
