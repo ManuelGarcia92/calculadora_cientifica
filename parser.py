@@ -116,3 +116,14 @@ class Parser:
             self.advance()
             asignaciones.extend(self.parsear_asignacion_de_variables())
         return asignaciones
+
+    #def parsear_argumentos(self):
+        argumentos = []
+        self.consumir("PAREN_IZQ", "Falta el paréntesis de apertura ( en los argumentos")
+        if not self.match("PAREN_DER"):
+            argumentos.append(self.expr())
+            while self.match("COMA"):
+                self.advance()
+                argumentos.append(self.expr())
+        self.consumir("PAREN_DER", "Falta el paréntesis de cierre ) en los argumentos")
+        return argumentos

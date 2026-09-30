@@ -10,8 +10,16 @@ OPERACIONES = {
     "+" : lambda x, y: x + y
 } 
 PALABRAS_RESERVADAS = {
-    "var" : "VAR"
+    "var"  : "VAR",
+    #"abs"  : "ABS",
+    #"asin" : "ASIN",
+    #"cos"  : "COS",
+    #"acos" : "ACOS",
+    #"tan"  : "TAN",
+    #"atan" : "ATAN",
+    #"log"  : "LOG"
 }
+
 
 OPERADORES_SIMPLES = {
     "+"  : "SUMA",
