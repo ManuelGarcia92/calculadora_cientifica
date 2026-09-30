@@ -1,4 +1,4 @@
-from constantes import OPERACIONES, OPERACIONES_CIENTIIFCAS
+from constantes import OPERACIONES, OPERACIONES_CIENTIFCAS
 class NodoBinario:
     def __init__(self, operador, izquierda, derecha):
         self.operador = operador
@@ -19,7 +19,7 @@ class NodoOperacion:
     def evaluar(self, memoria):
         valores = [valor.evaluar(memoria) for valor in self.argumentos]
 
-        func = OPERACIONES_CIENTIIFCAS.get(self.operador)
+        func = OPERACIONES_CIENTIFCAS.get(self.operador)
         if not func:
             raise Exception(f"Error: Operador desconocido : {self.operador}")
 
