@@ -47,11 +47,11 @@ class Parser:
     def parsear_instrucciones(self):
         if self.match("VAR"):
             self.advance()
-            return self.parsear_asignacion_de_variables()
+            return self.parsear_secuencia(self._parsear_una_asignacion)
         
         elif self.match("DEL"):
             self.advance()
-            return self.parsear_eliminacion()
+            return self.parsear_secuencia(self._parsear_una_eliminacion)
         
         elif self.match("CLEAR"):
             self.advance()
@@ -126,19 +126,19 @@ class Parser:
         self.consumir("ASIGNACION", "Falta el signo de asignación = ")
         nodo = self.expr()
         return nodos.NodoAsignacion(token_id.valor, nodo)
-
-    def parsear_asignacion_de_variables(self):
-        asignacion = [self._parsear_una_asignacion()]
-        while self.match("COMA"):
-           self.advance()
-           asignacion.append(self._parsear_una_asignacion())
-        self.consumir("PUNTO_Y_COMA", "Se debe finalizar la asignación de variables con ; ")
-        return asignacion 
     
-    def parsear_eliminacion(self):
+    def _parsear_una_eliminacion(self):
         token_id = self.consumir("IDENTIFICADOR", "Falta el nombre de la variable que desea eliminar")
         return nodos.NodoEliminacion(token_id.valor)
-
+    
+    def parsear_secuencia(self, metodo):
+        instruccion = [metodo()]
+        while self.match("COMA"):
+           self.advance()
+           instruccion.append(metodo())
+        self.consumir("PUNTO_Y_COMA", "Se debe finalizar con ; ")
+        return instruccion 
+    
     def parsear_argumentos(self):
         argumentos = []
         self.consumir("PAREN_IZQ", "Falta el paréntesis de apertura ( en los argumentos")
