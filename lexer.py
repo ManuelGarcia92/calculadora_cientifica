@@ -38,7 +38,7 @@ class Lexer:
             buffer += self.advance()
 
         if contador_punto_decimal > 1:
-            raise Exception(f"Error: Un número tiene varios puntos decimales: Token {buffer} : Columna {self.pos}")
+            raise Exception(f"Error: Un número tiene varios puntos decimales : Token {buffer} : Columna {self.pos}")
         
         if contador_punto_decimal:
             if buffer == ".":
@@ -65,18 +65,25 @@ class Lexer:
 
     def tokenizar(self) -> list:
         tokens  = [] 
+        
         while self.pos < self.limite:
             char_actual = self.peek()
+
             if char_actual.isspace():
                 self.advance()
+
             elif char_actual.isalpha() or char_actual == "_":
                 tokens.append(self.leer_palabra())
+
             elif char_actual in OPERADORES_SIMPLES:
                 tokens.append(self.leer_simbolo())
+
             elif char_actual.isdigit() or char_actual == ".":
                 tokens.append(self.leer_numero())  
+
             else:
-                raise Exception(f"Error: Caracter desconocido: Token {char_actual} : Columna {self.pos}")
+                raise Exception(f"Error: Caracter desconocido : Token {char_actual} : Columna {self.pos}")
+            
         tokens.append(Token("FIN", None, columna=self.pos))
         return tokens
 
