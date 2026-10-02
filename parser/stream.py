@@ -4,7 +4,7 @@ class TokenStream:
         self.pos = 0
     
     def levantar_error(self, mensaje):
-        raise SyntaxError(f"{mensaje}: Token {self.peek().valor} : Columna {self.peek().col_inicio}-{self.peek().col_fin}")
+        raise SyntaxError(f"{mensaje}: Token {self.peek().valor} : Columna {self.peek().columna}")
     
     def peek(self):
         if self.pos < len(self.tokens):
