@@ -19,7 +19,7 @@ class Parser:
         if self.pos + pasos < self.limite:
             return self.tokens[self.pos + pasos]
         
-    def match(self, tipo, pasos=0):
+    def match(self, *tipo, pasos=0):
         token = self.peek(pasos)
         return token is not None and token.tipo == tipo
     
@@ -63,7 +63,7 @@ class Parser:
 
     def expr(self):
         nodo = self.term()
-        while self.match("SUMA") or self.match("RESTA"):
+        while self.match("SUMA", "RESTA"):
             operador = self.advance()
             derecha = self.term()
             nodo = nodos.NodoBinario(operador.valor, nodo, derecha)

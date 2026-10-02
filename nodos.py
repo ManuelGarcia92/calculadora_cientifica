@@ -18,11 +18,11 @@ class NodoOperacion:
 
     def evaluar(self, memoria):
         valores = [valor.evaluar(memoria) for valor in self.argumentos]
-        func = OPERACIONES_CIENTIFCAS.get(self.operador)
-        if not func:
+        operacion = OPERACIONES_CIENTIFCAS.get(self.operador)
+        if not operacion:
             raise Exception(f"Error: Operador desconocido : {self.operador}")
         try:
-            return func(*valores)
+            return operacion(*valores)
         except TypeError:
             raise Exception(f"Error: Número incorrecto de argumentos para {self.operador}")
 
