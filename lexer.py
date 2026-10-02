@@ -45,7 +45,7 @@ class Lexer:
 
         col_fin = self.pos
         if contador_punto_decimal > 1:
-            raise Exception(f"Error: Un número tiene varios puntos decimales : Token {buffer} : Columna {col_inicio}-{col_fin}")
+            raise Exception(f"Un número tiene varios puntos decimales : Token {buffer} : Columna {col_inicio}-{col_fin}")
         
         if contador_punto_decimal:
             if buffer == ".":
@@ -94,7 +94,7 @@ class Lexer:
                 tokens.append(self.leer_numero())  
 
             else:
-                raise Exception(f"Error: Caracter desconocido : Token {char_actual} : Columna {self.pos}-{self.pos}")
+                raise Exception(f"Caracter desconocido : Token {char_actual} : Columna {self.pos}-{self.pos}")
             
         tokens.append(Token("FIN", None, col_inicio=self.pos+1, col_fin=self.pos+1))
         return tokens

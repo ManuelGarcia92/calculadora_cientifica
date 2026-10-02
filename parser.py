@@ -6,25 +6,29 @@ class Parser:
         self.limite = len(tokens)
         self.pos = 0
 
-    def levantar_error(self, mensaje, pasos=0):
-        raise Exception(f"Error: {mensaje} : Token {self.peek(pasos).valor} : Columna {self.peek(pasos).col_inicio}-{self.peek(pasos).col_fin}")
+    def levantar_error(self, mensaje):
+        raise Exception(f"{mensaje} : Token {self.peek().valor} : Columna {self.peek().col_inicio}-{self.peek().col_fin}")
     
-    def advance(self):
+    def peek(self):
         if self.pos < self.limite:
-            token = self.tokens[self.pos]
+            return self.tokens[self.pos]
+        return None
+            
+    def advance(self):
+        token_actual = self.peek()
+        if token_actual:
             self.pos += 1
-            return token
+            return token_actual
+        return None
+          
+    def match(self, *tipos):
+        token_actual = self.peek()
+        if token_actual and token_actual.tipo in tipos:
+            return token_actual
+        return None
     
-    def peek(self, pasos=0):
-        if self.pos + pasos < self.limite:
-            return self.tokens[self.pos + pasos]
-        
-    def match(self, *tipo, pasos=0):
-        token = self.peek(pasos)
-        return token is not None and token.tipo == tipo
-    
-    def consumir(self, tipo, mensaje_error):
-        if self.match(tipo):
+    def consumir(self, tipo_esperado, mensaje_error):
+        if self.match(tipo_esperado):
             return self.advance()
         self.levantar_error(mensaje_error)    
 
@@ -71,7 +75,7 @@ class Parser:
 
     def term(self):
         nodo = self.power()
-        while self.match("MULTI") or self.match("DIV") or self.match("DIV_ENTERA") or self.match("MOD"):
+        while self.match("MULTI", "DIV", "DIV_ENTERA", "MOD"):
             operador = self.advance()
             derecha = self.power()
             nodo = nodos.NodoBinario(operador.valor, nodo, derecha)
@@ -79,7 +83,7 @@ class Parser:
 
     def power(self):
         nodo = self.factor()
-        if self.match("POTENCIA") or self.match("RAIZ_ENESIMA"):
+        if self.match("POTENCIA", "RAIZ_ENESIMA"):
             operador = self.advance()
             derecha = self.power()
             nodo = nodos.NodoBinario(operador.valor, nodo, derecha)
@@ -87,19 +91,19 @@ class Parser:
 
     def factor(self):
         if self.match("PAREN_IZQ"):
-           return self.parsear_parentesis()
+            return self.parsear_parentesis()
         
-        if self.match("SUMA") or self.match("RESTA"):
+        if self.match("SUMA", "RESTA"):
             return self.parsear_numeros_negativos_y_positivos()
-            
-        if self.match("IDENTIFICADOR"):
-           token_id = self.advance()
-           return nodos.NodoIdentificador(token_id.valor)
         
         if self.match("OPC"):
             operador = self.advance()
             argumentos = self.parsear_argumentos()
-            return nodos.NodoOperacion(operador.valor, argumentos)
+            return nodos.NodoOperacion(operador.valor, argumentos)  
+          
+        if self.match("IDENTIFICADOR"):
+            token_id = self.advance()
+            return nodos.NodoIdentificador(token_id.valor)
         
         if self.match("NUMERO"):
             token = self.advance()
@@ -115,7 +119,7 @@ class Parser:
     
     def parsear_numeros_negativos_y_positivos(self):
         operador = self.advance()
-        if self.match("SUMA") or self.match("RESTA"):
+        if self.match("SUMA", "RESTA"):
             self.levantar_error("Operador repetido")
         elif operador.tipo == "SUMA":
             return nodos.NodoPositivo(self.power())
