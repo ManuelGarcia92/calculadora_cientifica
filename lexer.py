@@ -1,9 +1,10 @@
 from constantes import OPERADORES_SIMPLES, OPERADORES_DOBLES, PALABRAS_RESERVADAS
 class Token:
-    def __init__(self, tipo, valor, columna):
+    def __init__(self, tipo, valor, col_inicio, col_fin):
         self.tipo = tipo
         self.valor = valor
-        self.columna = columna
+        self.col_inicio = col_inicio
+        self.col_fin = col_fin
 
 class Lexer:
     def __init__(self, texto: str):
@@ -20,16 +21,21 @@ class Lexer:
         return self.texto[self.pos + pasos]
         
     def leer_palabra(self) -> Token:
+        col_inicio = self.pos + 1
         buffer = ""
         while self.pos < self.limite and (self.peek().isalnum() or self.peek() == "_"):
             buffer += self.advance()
+
         if buffer in PALABRAS_RESERVADAS:
             tipo_token = PALABRAS_RESERVADAS[buffer] 
         else:
             tipo_token = "IDENTIFICADOR"
-        return Token(tipo_token, buffer, columna=self.pos) 
+
+        col_fin = self.pos
+        return Token(tipo_token, buffer, col_inicio, col_fin) 
     
     def leer_numero(self) -> Token:
+        col_inicio = self.pos + 1
         contador_punto_decimal = 0
         buffer = ""
         while self.pos < self.limite and (self.peek().isdigit() or self.peek() == "."):
@@ -37,8 +43,9 @@ class Lexer:
                 contador_punto_decimal += 1
             buffer += self.advance()
 
+        col_fin = self.pos
         if contador_punto_decimal > 1:
-            raise Exception(f"Error: Un número tiene varios puntos decimales : Token {buffer} : Columna {self.pos}")
+            raise Exception(f"Error: Un número tiene varios puntos decimales : Token {buffer} : Columna {col_inicio}-{col_fin}")
         
         if contador_punto_decimal:
             if buffer == ".":
@@ -50,10 +57,13 @@ class Lexer:
             valor_token = float(buffer)
         else:
             valor_token = int(buffer)
-        return Token("NUMERO", valor_token, columna=self.pos)
+
+        return Token("NUMERO", valor_token, col_inicio, col_fin)
 
     def leer_simbolo(self) -> Token:
         if self.pos < self.limite:
+            col_inicio = self.pos + 1
+
             if self.pos < self.limite - 1 and self.peek() + self.peek(1) in OPERADORES_DOBLES:
                 valor_token = self.advance()
                 valor_token += self.advance()
@@ -61,7 +71,9 @@ class Lexer:
             else:
                 valor_token = self.advance()
                 tipo_token = OPERADORES_SIMPLES[valor_token]
-            return Token(tipo_token, valor_token, columna=self.pos)
+
+            col_fin = self.pos
+            return Token(tipo_token, valor_token, col_inicio, col_fin)
 
     def tokenizar(self) -> list:
         tokens  = [] 
@@ -82,8 +94,8 @@ class Lexer:
                 tokens.append(self.leer_numero())  
 
             else:
-                raise Exception(f"Error: Caracter desconocido : Token {char_actual} : Columna {self.pos}")
+                raise Exception(f"Error: Caracter desconocido : Token {char_actual} : Columna {self.pos}-{self.pos}")
             
-        tokens.append(Token("FIN", None, columna=self.pos))
+        tokens.append(Token("FIN", None, col_inicio=self.pos+1, col_fin=self.pos+1))
         return tokens
 

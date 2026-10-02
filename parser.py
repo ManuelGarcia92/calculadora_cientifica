@@ -7,7 +7,7 @@ class Parser:
         self.pos = 0
 
     def levantar_error(self, mensaje, pasos=0):
-        raise Exception(f"Error: {mensaje} : Token {self.peek(pasos).valor} : Columna {self.peek(pasos).columna}")
+        raise Exception(f"Error: {mensaje} : Token {self.peek(pasos).valor} : Columna {self.peek(pasos).col_inicio}-{self.peek(pasos).col_fin}")
     
     def advance(self):
         if self.pos < self.limite:
@@ -31,9 +31,6 @@ class Parser:
     def parsear(self):
         instrucciones = []
         
-        if self.match("FIN"):
-            raise Exception("Expresión vacia")
-        
         while not self.match("FIN"):
             instrucciones.append(self.parsear_instrucciones())
             if self.match("PUNTO_Y_COMA"):
@@ -47,11 +44,15 @@ class Parser:
     def parsear_instrucciones(self):
         if self.match("VAR"):
             self.advance()
-            return self.parsear_secuencia(self._parsear_una_asignacion)
+            instrucion = self.parsear_secuencia(self._parsear_asignacion)
+            self.consumir("PUNTO_Y_COMA", "La secuencia debe finalizar con ; ")
+            return instrucion
         
         elif self.match("DEL"):
             self.advance()
-            return self.parsear_secuencia(self._parsear_una_eliminacion)
+            instrucion = self.parsear_secuencia(self._parsear_eliminacion)
+            self.consumir("PUNTO_Y_COMA", "La secuencia debe finalizar con ; ")
+            return instrucion
         
         elif self.match("CLEAR"):
             self.advance()
@@ -121,31 +122,32 @@ class Parser:
         else:
             return nodos.NodoNegativo(self.power())
         
-    def _parsear_una_asignacion(self):
+    def parsear_secuencia(self, metodo):
+        instruccion = [metodo()]
+        while self.match("COMA"):
+            self.advance()
+            instruccion.append(metodo())
+        return instruccion  
+     
+    def parsear_argumentos(self):
+        self.consumir("PAREN_IZQ", "Falta el paréntesis de apertura ( en los argumentos")
+        if not self.match("PAREN_DER"):
+            instruccion = self.parsear_secuencia(self.expr)
+        self.consumir("PAREN_DER", "Falta el paréntesis de cierre ) en los argumentos")
+        return instruccion
+    
+    def _parsear_asignacion(self):
         token_id = self.consumir("IDENTIFICADOR", "Falta el nombre de la variable")
         self.consumir("ASIGNACION", "Falta el signo de asignación = ")
         nodo = self.expr()
         return nodos.NodoAsignacion(token_id.valor, nodo)
     
-    def _parsear_una_eliminacion(self):
+    def _parsear_eliminacion(self):
         token_id = self.consumir("IDENTIFICADOR", "Falta el nombre de la variable que desea eliminar")
         return nodos.NodoEliminacion(token_id.valor)
     
-    def parsear_secuencia(self, metodo):
-        instruccion = [metodo()]
-        while self.match("COMA"):
-           self.advance()
-           instruccion.append(metodo())
-        self.consumir("PUNTO_Y_COMA", "Se debe finalizar con ; ")
-        return instruccion 
     
-    def parsear_argumentos(self):
-        argumentos = []
-        self.consumir("PAREN_IZQ", "Falta el paréntesis de apertura ( en los argumentos")
-        if not self.match("PAREN_DER"):
-            argumentos.append(self.expr())
-            while self.match("COMA"):
-                self.advance()
-                argumentos.append(self.expr())
-        self.consumir("PAREN_DER", "Falta el paréntesis de cierre ) en los argumentos")
-        return argumentos
+    
+     
+    
+    

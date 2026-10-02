@@ -11,6 +11,8 @@ def main() -> None:
         print("Ingrese break para salir.")
         memoria.imprimir_memoria()
         texto = input(">>> : ")
+        if not texto:
+            continue
         if texto == "break":
             break
         try:
@@ -20,10 +22,8 @@ def main() -> None:
             arbol = parser.parsear()
             evaluador = Evaluador(arbol)
             resultado = evaluador.evaluar(memoria)
-            if resultado:
+            if resultado is not None:
                 print(resultado)
-            else:
-                print()
         except Exception as error:
             print(error)     
         pausa()

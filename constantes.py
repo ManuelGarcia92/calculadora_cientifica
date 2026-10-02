@@ -14,13 +14,14 @@ OPERACIONES = {
 
 OPERACIONES_CIENTIFCAS = {
     "abs"  : lambda x: abs(x),
+    "sin"  : lambda x: math.sin(x),
     "asin" : lambda x: math.asin(x),
     "cos"  : lambda x: math.cos(x),
     "acos" : lambda x: math.acos(x),  
     "tan"  : lambda x: math.tan(x), 
     "atan" : lambda x: math.atan(x), 
+    "ln"   : lambda x, base: math.log(x, base), 
     "log"  : lambda x: math.log10(x), 
-    "logn" : lambda x, base: math.log(x, base), 
 }
 
 PALABRAS_RESERVADAS = {
@@ -28,13 +29,15 @@ PALABRAS_RESERVADAS = {
     "del"   : "DEL",
     "clear" : "CLEAR",
     "abs"   : "OPC",
+    "sin"   : "SIN",
     "asin"  : "OPC",
     "cos"   : "OPC",
     "acos"  : "OPC",
     "tan"   : "OPC",
     "atan"  : "OPC",
+    "ln"    : "OPC",
     "log"   : "OPC",
-    "logn"  : "OPC"
+
 }
 
 
