@@ -30,7 +30,6 @@ class TokenStream:
         self.levantar_error(mensaje_error)   
 
     def sincronizar(self):
-        self.advance()
         while not self.match("FIN"):
             if self.tokens[self.pos - 1].tipo == "PUNTO_Y_COMA":
                 return
