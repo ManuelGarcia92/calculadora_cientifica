@@ -20,8 +20,8 @@ FUNCIONES = {
     "acos" : lambda x: math.acos(x),  
     "tan"  : lambda x: math.tan(x), 
     "atan" : lambda x: math.atan(x), 
-    "log"  : lambda x: math.log10(x), 
-    "ln"   : lambda x, base: math.log(x, base), 
+    "ln"   : lambda x: math.log(x), 
+    "log"  : lambda x, base=10: math.log(x, base), 
 }
 
 PALABRAS_RESERVADAS = {
@@ -35,8 +35,8 @@ PALABRAS_RESERVADAS = {
     "acos"  : "FUN",
     "tan"   : "FUN",
     "atan"  : "FUN",
-    "log"   : "FUN",
-    "ln"    : "FUN",
+    "ln"   : "FUN",
+    "log"    : "FUN",
 }
 
 OPERADORES_SIMPLES = {
