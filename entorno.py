@@ -10,17 +10,17 @@ class TablaDeSimbolos:
 
     def obtener(self, nombre):
         if not nombre in self.memoria:
-            raise Exception(f"Variable {nombre} no esta definida.")
+            raise Exception(f"la variable {nombre} no esta definida.")
         return self.memoria[nombre]
     
     def eliminar(self, nombre):
         if not nombre in self.memoria:
-            raise Exception(f"Variable {nombre} no esta definida.")
+            raise Exception(f"La variable {nombre} no esta definida.")
         del self.memoria[nombre]
             
     def limpiar(self):
         if not self.memoria:
-            raise Exception(f"La memorioa esta vacía.")
+            raise Exception("La memoria esta vacía.")
         self.memoria.clear()
 
     def imprimir_memoria(self):

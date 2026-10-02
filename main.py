@@ -1,5 +1,5 @@
 from extras import limpiar_terminal, pausa
-from tabla_de_simbolos import TablaDeSimbolos
+from entorno import TablaDeSimbolos
 from lexer import Lexer 
 from parser import Parser
 from evaluador import Evaluador

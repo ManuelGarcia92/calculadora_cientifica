@@ -1,4 +1,4 @@
-from constantes import OPERACIONES, OPERACIONES_CIENTIFCAS
+from constantes import OPERACIONES, FUNCIONES
 class NodoBinario:
     def __init__(self, operador, izquierda, derecha):
         self.operador = operador
@@ -11,18 +11,18 @@ class NodoBinario:
         resultado = OPERACIONES[self.operador](val_izquierda, val_derecha)
         return resultado
 
-class NodoOperacion:
+class NodoFuncion:
     def __init__(self, operador, argumentos):
         self.operador = operador
         self.argumentos = argumentos
 
     def evaluar(self, memoria):
         valores = [valor.evaluar(memoria) for valor in self.argumentos]
-        operacion = OPERACIONES_CIENTIFCAS.get(self.operador)
-        if not operacion:
+        funcion = FUNCIONES.get(self.operador)
+        if not funcion:
             raise Exception(f"Error: Operador desconocido : {self.operador}")
         try:
-            return operacion(*valores)
+            return funcion(*valores)
         except TypeError:
             raise Exception(f"Error: Número incorrecto de argumentos para {self.operador}")
 
