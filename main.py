@@ -6,7 +6,6 @@ from evaluador import Evaluador
 
 def main() -> None:
     memoria = TablaDeSimbolos()
-
     while True:
         limpiar_terminal()
         print("Ingrese break para salir.")
@@ -28,7 +27,6 @@ def main() -> None:
                     print(resultado)
         except Exception as error:
             print(f"\n[Error de Ejecución]: {error}")     
-
         pausa()
         
 if __name__ == "__main__":
