@@ -23,6 +23,7 @@ OPERADORES_SIMPLES = {
     "("  : "PAREN_IZQ",
     ")"  : "PAREN_DER",
     "="  : "IGUAL",
+    "."  : "PUNTO",
     ","  : "COMA", 
     ";"  : "PUNTO_Y_COMA",
 }

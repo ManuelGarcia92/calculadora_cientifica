@@ -33,7 +33,11 @@ class NodoNumero:
         self.valor = valor
 
     def evaluar(self, memoria):
-        return self.valor
+        if "." in self.valor:
+            valor = float(self.valor)
+        else:
+            valor = int(self.valor)
+        return valor
 
 class NodoPositivo:
     def __init__(self, valor):

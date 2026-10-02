@@ -44,17 +44,7 @@ class Lexer:
         if contador_punto_decimal > 1:
             raise Exception(f"Un número tiene varios puntos decimales : Token {buffer} : Columna {col_inicio}-{col_fin}")
         
-        if contador_punto_decimal:
-            if buffer == ".":
-                buffer = "0.0"
-            elif buffer[0] == ".":
-                buffer = "0" + buffer
-            elif buffer[-1] == ".":
-                buffer += "0"
-            valor_token = float(buffer)
-        else:
-            valor_token = int(buffer)
-        return Token("NUMERO", valor_token, columna=f"{col_inicio}-{col_fin}")
+        return Token("NUMERO", buffer, columna=f"{col_inicio}-{col_fin}")
 
     def _leer_simbolo(self) -> Token:
         if self.pos < len(self.texto):
