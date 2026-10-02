@@ -8,6 +8,8 @@ class TablaDeSimbolos:
         }
 
     def declarar(self, nombre, valor):
+        if nombre in ("pi","e"):
+            raise Exception(f"La variable {nombre} no puede ser modificada.")
         self.memoria[nombre] = valor
 
     def obtener(self, nombre):
@@ -18,6 +20,8 @@ class TablaDeSimbolos:
     def eliminar(self, nombre):
         if not nombre in self.memoria:
             raise Exception(f"La variable {nombre} no esta definida.")
+        if nombre in ("pi","e"):
+            raise Exception(f"La variable {nombre} no puede ser eliminada.")
         del self.memoria[nombre]
             
     def limpiar(self):
