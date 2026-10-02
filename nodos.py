@@ -19,12 +19,10 @@ class NodoFuncion:
     def evaluar(self, memoria):
         valores = [valor.evaluar(memoria) for valor in self.argumentos]
         funcion = FUNCIONES.get(self.operador)
-        if not funcion:
-            raise Exception(f"Error: Operador desconocido : {self.operador}")
         try:
             return funcion(*valores)
         except TypeError:
-            raise Exception(f"Error: Número incorrecto de argumentos para {self.operador}")
+            raise Exception(f"Número incorrecto de argumentos para {self.operador}")
 
 class NodoNumero:
     def __init__(self, valor):

@@ -11,27 +11,21 @@ def main() -> None:
         limpiar_terminal()
         print("Ingrese break para salir.")
         memoria.imprimir_memoria()
-
         texto = input(">>> : ").strip()
         if texto.lower() == "break":
             break
         if not texto:
             continue
-        
         try:
             lexer = Lexer(texto)
             tokens = lexer.tokenizar()
-
             parser = Parser(tokens)
             arbol = parser.parsear()
-
             if arbol:
                 evaluador = Evaluador(arbol)
                 resultado = evaluador.evaluar(memoria)
-
                 if resultado is not None:
                     print(resultado)
-
         except Exception as error:
             print(f"\n[Error de Ejecución]: {error}")     
 
