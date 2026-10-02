@@ -1,8 +1,10 @@
+import math 
+
 class TablaDeSimbolos:
     def __init__(self):
         self.memoria = {
-            "pi" : 3.1415926536,
-            "e"  : 2.7182818285
+            "pi" : math.pi,
+            "e"  : math.e
         }
 
     def declarar(self, nombre, valor):
