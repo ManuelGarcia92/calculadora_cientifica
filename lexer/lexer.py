@@ -56,6 +56,7 @@ class Lexer:
             else:
                 valor_token = self._advance()
                 tipo_token = OPERADORES_SIMPLES[valor_token]
+                
             col_fin = self.pos
             return Token(tipo_token, valor_token, columna=f"{col_inicio}-{col_fin}")
 

@@ -21,7 +21,7 @@ class NodoFuncion:
         
         funcion = FUNCIONES.get(self.operador)
         if not funcion:
-            raise Exception(f"Error: Operador desconocido : {self.operador}")
+            raise Exception(f"Operador desconocido : {self.operador}")
         
         try:
             return funcion(*valores)
