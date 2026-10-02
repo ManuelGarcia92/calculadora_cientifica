@@ -78,6 +78,13 @@ class GrammarRules:
             instruccion.append(metodo())
         return instruccion  
     
+    def _parsear_argumentos(self):
+        self.stream.consumir("PAREN_IZQ", "Falta el paréntesis de apertura ( en los argumentos")
+        if not self.stream.match("PAREN_DER"):
+            instruccion = self._parsear_secuencia(self._expr)
+        self.stream.consumir("PAREN_DER", "Falta el paréntesis de cierre ) en los argumentos")
+        return instruccion
+    
     def _parsear_asignacion(self):
         token_id = self.stream.consumir("IDENTIFICADOR", "Falta el nombre de la variable")
         self.stream.consumir("IGUAL", "Falta el signo de asignación = ")
@@ -90,13 +97,6 @@ class GrammarRules:
     
     def _parsear_limpieza(self):
         return nodos.NodoLimpieza()
-
-    def _parsear_argumentos(self):
-        self.stream.consumir("PAREN_IZQ", "Falta el paréntesis de apertura ( en los argumentos")
-        if not self.stream.match("PAREN_DER"):
-            instruccion = self._parsear_secuencia(self._expr)
-        self.stream.consumir("PAREN_DER", "Falta el paréntesis de cierre ) en los argumentos")
-        return instruccion
     
     def _parsear_parentesis(self):
         self.stream.advance()
