@@ -9,19 +9,19 @@ class Parser:
     def parsear_instrucciones(self):
         if self.stream.match("VAR"):
             self.stream.advance()
-            instrucion = self.rules.parsear_secuencia(self.rules._parsear_asignacion)
+            instrucion = self.rules.parsear_secuencia(self.rules.parsear_asignacion)
             self.stream.consumir("PUNTO_Y_COMA", "La secuencia debe finalizar con ; ")
             return instrucion
         
         elif self.stream.match("DEL"):
             self.stream.advance()
-            instrucion = self.rules.parsear_secuencia(self.rules._parsear_eliminacion)
+            instrucion = self.rules.parsear_secuencia(self.rules.parsear_eliminacion)
             self.stream.consumir("PUNTO_Y_COMA", "La secuencia debe finalizar con ; ")
             return instrucion
         
         elif self.stream.match("CLEAR"):
             self.stream.advance()
-            instrucion = self.rules._parsear_limpieza()
+            instrucion = self.rules.parsear_limpieza()
             return instrucion
         
         else:

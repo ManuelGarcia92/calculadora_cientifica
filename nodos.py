@@ -40,7 +40,7 @@ class NodoPositivo:
     
 class NodoNegativo:
     def __init__(self, valor):
-            self.valor = valor
+        self.valor = valor
 
     def evaluar(self, memoria):
         return -self.valor.evaluar(memoria)
