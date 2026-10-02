@@ -31,11 +31,17 @@ class NodoNumero:
     def evaluar(self, memoria):
         return self.valor
 
-class NodoPositivo(NodoNumero):
+class NodoPositivo:
+    def __init__(self, valor):
+        self.valor = valor
+
     def evaluar(self, memoria):
-        return self.valor.evaluar(memoria)
+        return +self.valor.evaluar(memoria)
     
-class NodoNegativo(NodoNumero):
+class NodoNegativo:
+    def __init__(self, valor):
+            self.valor = valor
+
     def evaluar(self, memoria):
         return -self.valor.evaluar(memoria)
 
