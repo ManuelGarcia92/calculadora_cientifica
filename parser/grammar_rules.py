@@ -61,9 +61,13 @@ class GrammarRules:
             return nodos.NodoIdentificador(token_id.valor)
         
         if self.stream.match("NUMERO"):
-            token = self.stream.advance()
-            return nodos.NodoNumero(token.valor)
+            error = self.stream.advance()
+            return nodos.NodoNumero(error.valor)
 
+        if self.stream.match("ERROR"):
+            error = self.stream.advance()
+            return nodos.NodoError(error.valor)
+        
         if self.stream.match("FUN"):
             operador = self.stream.advance()
             argumentos = self._parsear_argumentos()

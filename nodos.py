@@ -39,7 +39,14 @@ class NodoNumero:
         else:
             valor = int(self.valor)
         return valor
+    
+class NodoError:
+    def __init__(self, valor):
+        self.valor = valor
 
+    def evaluar(self, memoria):
+        raise Exception(self.valor)
+    
 class NodoPositivo:
     def __init__(self, valor):
         self.valor = valor
