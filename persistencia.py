@@ -48,4 +48,19 @@ def cargar_historial(nombre_archivo="historial.json"):
     except (json.JSONDecodeError, FileNotFoundError):
         return []
 
+def borrar_historial(nombre_archivo="historial.json") -> bool:
+    ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
+    _garantizar_carpeta()
+    with open(ruta, "w", encoding="utf-8") as f:
+        json.dump([], f, indent=4)
+    return True
 
+def eliminar_registro_historial(indice: int, nombre_archivo="historial.json") -> bool:
+    historial = cargar_historial(nombre_archivo)
+    if 1 <= indice <= len(historial):
+        historial.pop(indice - 1)
+        ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
+        with open(ruta, "w", encoding="utf-8") as f:
+            json.dump(historial, f, indent=4)
+        return True
+    return False 

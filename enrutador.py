@@ -1,5 +1,5 @@
 import consola
-from persistencia import cargar_historial, agregar_al_historial
+from persistencia import cargar_historial, agregar_al_historial, borrar_historial, eliminar_registro_historial
 from entorno import TablaDeSimbolos
 from lexer import Lexer 
 from parser import Parser
@@ -23,7 +23,7 @@ def calculo() -> None:
     memoria = TablaDeSimbolos()
     while True:
         consola.limpiar_terminal()
-        print("Ingrese break para salir.")
+        print("Ingrese el comando [break] para salir.")
         memoria.imprimir_memoria()
 
         texto = consola.pedir_dato(">>> : ")
@@ -38,12 +38,43 @@ def calculo() -> None:
             consola.mostrar_mensaje(f"[Error de Ejecución]: {error}")     
         consola.pausa()
 
+def procesar_comando_historial(texto: str) -> bool:
+    entrada = texto.strip().lower()
+    if entrada == "clear":
+        borrar_historial()
+        print("Historial borrado con éxito.")
+        return True
+    
+    if entrada.startswith("del "):
+        partes = entrada.split()
+        if len(partes) == 2 and partes[1].isdigit():
+            num_registro = int(partes[1])
+            if eliminar_registro_historial(num_registro):
+                print(f"Registro [{num_registro}] eliminado.")
+            else:
+                print(f"El registro [{num_registro}] no existe.")
+            return True
+        return False
+    
 def ver_historial() -> None:
-    consola.limpiar_terminal()
-    consola.mostrar_titulo("Registro de operaciones.")
-    historial = cargar_historial()
-    if historial:
-        consola.mostrar_registro(historial)
-    else:
-        consola.mostrar_mensaje("El historial esta vacío")
-    consola.pausa()
+    while True:
+        consola.limpiar_terminal()
+        consola.mostrar_titulo("Registro de operaciones.")
+        historial = cargar_historial()
+        if historial:
+            consola.mostrar_registro(historial)
+            print("Ingrese el comando [del] para eliminar una operación en especifico del historial.")
+            print("Ingrese el comando [clear] si desea borrar todo el historial.")
+        else:
+            consola.mostrar_mensaje("El historial esta vacío.")
+            consola.pausa()
+            break
+        print("Ingrese el comando [break] para salir.")
+        comando = consola.pedir_dato(">>> : ")
+        if comando.lower() == "break":
+            break
+        elif "del" in comando or "clear" in comando:
+            procesar_comando_historial(comando)
+        else:
+            consola.mostrar_error(f"El comando {comando} no existe.")
+        consola.pausa()
