@@ -1,4 +1,5 @@
 from despacho import OPERACIONES, FUNCIONES
+
 class NodoBinario:
     def __init__(self, operador, izquierda, derecha):
         self.operador = operador
