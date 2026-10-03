@@ -29,3 +29,23 @@ def mostrar_registro(registros: list[dict]) -> None:
     for i, registro in enumerate(registros):
         print(f"[{i+1}]: {registro["expresion"]} = {registro["resultado"]}")
     print(f"\n{'=' * 40}")
+
+def formatear_texto(tokens):
+    if not tokens:
+        return ""
+    resultado = []
+    pegar_izquierda = {";", ")", ","}
+    pegar_derecha = {"("}
+    for i, token in enumerate(tokens):
+        valor = str(token.valor)
+        if valor == "None":
+            continue
+        if i == 0:
+            resultado.append(valor)
+            continue
+        token_anteriro = str(tokens[i - 1].valor)
+        if valor in pegar_izquierda or token_anteriro in pegar_derecha:
+            resultado.append(valor)
+        else:
+            resultado.append(f" {valor}")
+    return "".join(resultado)
