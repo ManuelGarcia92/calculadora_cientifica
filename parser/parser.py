@@ -12,6 +12,8 @@ class Parser:
             try:
                 instruccion = self.rules.parsear_instrucciones()
                 instrucciones.append(instruccion)
+                if self.stream.match("PUNTO_Y_COMA"):
+                    self.stream.advance()
             except SyntaxError as error:
                 print(f"Error: {error}")
                 self.stream.sincronizar()

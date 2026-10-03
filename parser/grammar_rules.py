@@ -21,7 +21,7 @@ class GrammarRules:
             self.stream.advance()
             instrucion = self._parsear_limpieza()
             return instrucion
-        
+
         else:
             return self._expr()
             

@@ -1,4 +1,4 @@
-from funciones_auxiliares import limpiar_terminal, pausa
+from consola import limpiar_terminal, pausa
 from entorno import TablaDeSimbolos
 from lexer import Lexer 
 from parser import Parser
