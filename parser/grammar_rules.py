@@ -83,11 +83,12 @@ class GrammarRules:
         return instruccion  
     
     def _parsear_argumentos(self):
+        argumentos = []
         self.stream.consumir("PAREN_IZQ", "Falta el paréntesis de apertura ( en los argumentos")
         if not self.stream.match("PAREN_DER"):
-            instruccion = self._parsear_secuencia(self._expr)
+            argumentos = self._parsear_secuencia(self._expr)
         self.stream.consumir("PAREN_DER", "Falta el paréntesis de cierre ) en los argumentos")
-        return instruccion
+        return argumentos
     
     def _parsear_asignacion(self):
         token_id = self.stream.consumir("IDENTIFICADOR", "Falta el nombre de la variable")
