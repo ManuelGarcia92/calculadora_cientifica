@@ -65,16 +65,15 @@ def ver_historial() -> None:
             consola.mostrar_registro(historial)
             print("Ingrese el comando [del] para eliminar una operación en especifico del historial.")
             print("Ingrese el comando [clear] si desea borrar todo el historial.")
+            print("Ingrese el comando [break] para salir.")
         else:
             consola.mostrar_mensaje("El historial esta vacío.")
             consola.pausa()
             break
-        print("Ingrese el comando [break] para salir.")
         comando = consola.pedir_dato(">>> : ")
         if comando.lower() == "break":
             break
-        elif "del" in comando or "clear" in comando:
-            procesar_comando_historial(comando)
-        else:
-            consola.mostrar_error(f"El comando {comando} no existe.")
-        consola.pausa()
+        if comando:
+            if not procesar_comando_historial(comando):
+                consola.mostrar_error(f"El comando {comando} no existe.")
+            consola.pausa()

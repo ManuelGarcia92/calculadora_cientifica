@@ -31,7 +31,7 @@ class TokenStream:
 
     def sincronizar(self):
         while not self.match("FIN"):
-            if self.tokens[self.pos - 1].tipo == "PUNTO_Y_COMA":
+            if self.pos > 0 and self.tokens[self.pos - 1].tipo == "PUNTO_Y_COMA":
                 return
             if self.match("VAR", "DEL", "CLEAR"):
                 return

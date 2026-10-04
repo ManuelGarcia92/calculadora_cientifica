@@ -19,6 +19,7 @@ def guardar_memoria(variables: dict, nombre_archivo="memoria.json"):
         json.dump(variables, f, indent=4)
 
 def cargar_memoria(nombre_archivo="memoria.json") -> dict:
+    _garantizar_carpeta()
     ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
     if not os.path.exists(ruta):
         return {}
@@ -28,17 +29,8 @@ def cargar_memoria(nombre_archivo="memoria.json") -> dict:
     except (json.JSONDecodeError, FileNotFoundError):
         return {}
 
-def agregar_al_historial(expresion: str, resultado, nombre_archivo="historial.json"):
-    ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
-    historial = cargar_historial()
-    historial.append({
-        "expresion": expresion,
-        "resultado": resultado
-    })
-    with open(ruta, "w", encoding="utf-8") as f:
-        json.dump(historial, f, indent=4)
-
 def cargar_historial(nombre_archivo="historial.json"):
+    _garantizar_carpeta()
     ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
     if not os.path.exists(ruta):
         return []
@@ -47,13 +39,16 @@ def cargar_historial(nombre_archivo="historial.json"):
             return json.load(archivo)
     except (json.JSONDecodeError, FileNotFoundError):
         return []
-
-def borrar_historial(nombre_archivo="historial.json") -> bool:
+    
+def agregar_al_historial(expresion: str, resultado, nombre_archivo="historial.json"):
+    historial = cargar_historial()
     ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
-    _garantizar_carpeta()
+    historial.append({
+        "expresion": expresion,
+        "resultado": resultado
+    })
     with open(ruta, "w", encoding="utf-8") as f:
-        json.dump([], f, indent=4)
-    return True
+        json.dump(historial, f, indent=4)
 
 def eliminar_registro_historial(indice: int, nombre_archivo="historial.json") -> bool:
     historial = cargar_historial(nombre_archivo)
@@ -64,3 +59,10 @@ def eliminar_registro_historial(indice: int, nombre_archivo="historial.json") ->
             json.dump(historial, f, indent=4)
         return True
     return False 
+
+def borrar_historial(nombre_archivo="historial.json") -> bool:
+    _garantizar_carpeta()
+    ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
+    with open(ruta, "w", encoding="utf-8") as f:
+        json.dump([], f, indent=4)
+    return True
