@@ -23,7 +23,8 @@ class Lexer:
         tokens.append(Token("FIN", None, columna=self.pos+1))
         return tokens
     
-    def formatear_tokens(self, tokens):
+    @staticmethod
+    def formatear_tokens(tokens):
         if not tokens:
             return ""
         resultado = []
