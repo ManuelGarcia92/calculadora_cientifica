@@ -24,7 +24,6 @@ def cargar_memoria(nombre_archivo="memoria.json") -> dict:
         return {}
      
 def guardar_memoria(variables: dict, nombre_archivo="memoria.json"):
-    _garantizar_carpeta()
     ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
     with open(ruta, "w", encoding="utf-8") as f:
         json.dump(variables, f, indent=4)
@@ -51,7 +50,7 @@ def agregar_al_historial(expresion: str, resultado, nombre_archivo="historial.js
         json.dump(historial, f, indent=4)
 
 def eliminar_registro_historial(indice: int, nombre_archivo="historial.json") -> bool:
-    historial = cargar_historial(nombre_archivo)
+    historial = cargar_historial()
     if 1 <= indice <= len(historial):
         historial.pop(indice - 1)
         ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
@@ -61,7 +60,6 @@ def eliminar_registro_historial(indice: int, nombre_archivo="historial.json") ->
     return False 
 
 def borrar_historial(nombre_archivo="historial.json") -> bool:
-    _garantizar_carpeta()
     ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
     with open(ruta, "w", encoding="utf-8") as f:
         json.dump([], f, indent=4)

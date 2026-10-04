@@ -1,4 +1,3 @@
-from nodos import NodoError
 from .stream import TokenStream
 from .grammar_rules import GrammarRules
 

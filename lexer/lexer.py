@@ -1,4 +1,4 @@
-from .constantes_lexer import OPERADORES_SIMPLES, OPERADORES_DOBLES, PALABRAS_RESERVADAS
+from .constantes_lexer import PALABRAS_RESERVADAS, OPERADORES_SIMPLES, OPERADORES_DOBLES
 from .token import Token
 
 class Lexer:

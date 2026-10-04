@@ -1,9 +1,30 @@
-import consola
 from persistencia import cargar_historial, agregar_al_historial, borrar_historial, eliminar_registro_historial
 from entorno import TablaDeSimbolos
 from lexer import Lexer 
 from parser import Parser
 from evaluador import Evaluador
+import consola
+
+def formatear_texto_tokens(tokens):
+    if not tokens:
+        return ""
+    resultado = []
+    espacio_derecha = {";", ","}
+    for i, token in enumerate(tokens):
+        valor = str(token.valor)
+        if valor == "None":
+            continue
+        if i == 0:
+            resultado.append(valor)
+            continue
+        token_anterior = str(tokens[i - 1].valor)
+        if token_anterior in ("var", "del", "clear"):
+            resultado.append(f" {valor}")
+        elif valor in espacio_derecha:
+            resultado.append(f"{valor} ")
+        else:
+            resultado.append(valor)
+    return "".join(resultado)
 
 def ejecutar_linea(texto: str, memoria: TablaDeSimbolos):
     lexer = Lexer(texto)
@@ -15,7 +36,7 @@ def ejecutar_linea(texto: str, memoria: TablaDeSimbolos):
         evaluador = Evaluador(arbol)
         resultado = evaluador.evaluar(memoria)
         if resultado is not None:
-            texto_formateado = consola.formatear_texto(tokens)
+            texto_formateado = formatear_texto_tokens(tokens)
             agregar_al_historial(texto_formateado, resultado)
             print(resultado) 
 
@@ -77,3 +98,4 @@ def ver_historial() -> None:
             if not procesar_comando_historial(comando):
                 consola.mostrar_error(f"El comando {comando} no existe.")
             consola.pausa()
+

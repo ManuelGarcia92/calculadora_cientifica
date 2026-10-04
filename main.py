@@ -1,10 +1,10 @@
-import consola
 from enrutador import calculo, ver_historial
+import consola
 
 def main():
     while True:
         consola.limpiar_terminal()
-        consola.mostrar_titulo("Calculadora Cientifica")
+        consola.mostrar_titulo("Calculadora Científica")
         consola.mostrar_menu()
         opcion = consola.pedir_dato(">>> : ")
         if opcion == "3":
