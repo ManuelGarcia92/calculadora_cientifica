@@ -5,7 +5,7 @@ from evaluador import Evaluador
 import persistencia
 import consola
 
-def formatear_texto_tokens(tokens):
+def formatear_texto(tokens):
     if not tokens:
         return ""
     resultado = []
@@ -36,7 +36,7 @@ def ejecutar_linea(texto: str, memoria: TablaDeSimbolos):
         evaluador = Evaluador(arbol)
         resultado = evaluador.evaluar(memoria)
         if resultado is not None:
-            texto_formateado = formatear_texto_tokens(tokens)
+            texto_formateado = formatear_texto(tokens)
             persistencia.agregar_al_historial(texto_formateado, resultado)
             print(resultado) 
 
