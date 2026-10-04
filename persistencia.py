@@ -11,12 +11,6 @@ DIRECTORIO_DATOS = ruta_actual("data")
 def _garantizar_carpeta():
     if not os.path.exists(DIRECTORIO_DATOS):
         os.makedirs(DIRECTORIO_DATOS)
-    
-def guardar_memoria(variables: dict, nombre_archivo="memoria.json"):
-    _garantizar_carpeta()
-    ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
-    with open(ruta, "w", encoding="utf-8") as f:
-        json.dump(variables, f, indent=4)
 
 def cargar_memoria(nombre_archivo="memoria.json") -> dict:
     _garantizar_carpeta()
@@ -28,6 +22,12 @@ def cargar_memoria(nombre_archivo="memoria.json") -> dict:
             return json.load(f)
     except (json.JSONDecodeError, FileNotFoundError):
         return {}
+     
+def guardar_memoria(variables: dict, nombre_archivo="memoria.json"):
+    _garantizar_carpeta()
+    ruta = os.path.join(DIRECTORIO_DATOS, nombre_archivo)
+    with open(ruta, "w", encoding="utf-8") as f:
+        json.dump(variables, f, indent=4)
 
 def cargar_historial(nombre_archivo="historial.json"):
     _garantizar_carpeta()
