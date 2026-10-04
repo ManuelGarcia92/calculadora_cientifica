@@ -34,8 +34,7 @@ def formatear_texto(tokens):
     if not tokens:
         return ""
     resultado = []
-    pegar_izquierda = {";", ")", ","}
-    pegar_derecha = {"("}
+    espacio_derecha = {";", ","}
     for i, token in enumerate(tokens):
         valor = str(token.valor)
         if valor == "None":
@@ -43,9 +42,11 @@ def formatear_texto(tokens):
         if i == 0:
             resultado.append(valor)
             continue
-        token_anteriro = str(tokens[i - 1].valor)
-        if valor in pegar_izquierda or token_anteriro in pegar_derecha:
-            resultado.append(valor)
-        else:
+        token_anterior = str(tokens[i - 1].valor)
+        if token_anterior in ("var", "del", "clear"):
             resultado.append(f" {valor}")
+        elif valor in espacio_derecha:
+            resultado.append(f"{valor} ")
+        else:
+            resultado.append(valor)
     return "".join(resultado)
