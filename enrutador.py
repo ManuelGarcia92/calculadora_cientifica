@@ -64,7 +64,7 @@ def ver_historial() -> None:
         if historial:
             consola.mostrar_registro(historial)
             print("Ingrese el comando [del] y el número de la operación para borrarla del historial.")
-            print("Ingrese el comando [clear] si desea borrar todo el historial.")
+            print("Ingrese el comando [clear] para borrar todo el historial.")
             print("Ingrese el comando [break] para salir.")
         else:
             consola.mostrar_mensaje("El historial esta vacío.")
