@@ -35,7 +35,7 @@ def calculo() -> None:
         try:
             ejecutar_linea(texto, memoria)
         except Exception as error:
-            consola.mostrar_mensaje(f"[Error de Ejecución]: {error}")     
+            consola.mostrar_mensaje(f"[Error de Ejecución]: {error}.")     
         consola.pausa()
 
 def procesar_comando_historial(texto: str) -> bool:
@@ -63,7 +63,7 @@ def ver_historial() -> None:
         historial = cargar_historial()
         if historial:
             consola.mostrar_registro(historial)
-            print("Ingrese el comando [del] para eliminar una operación en especifico del historial.")
+            print("Ingrese el comando [del] y el número de la operación para borrarla del historial.")
             print("Ingrese el comando [clear] si desea borrar todo el historial.")
             print("Ingrese el comando [break] para salir.")
         else:

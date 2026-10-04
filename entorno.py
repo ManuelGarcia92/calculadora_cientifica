@@ -17,20 +17,20 @@ class TablaDeSimbolos:
 
     def declarar(self, nombre, valor):
         if nombre in self.CONSTANTES:
-            raise Exception(f"La variable {nombre} no puede ser modificada.")
+            raise Exception(f"La variable {nombre} no puede ser modificada")
         self.memoria[nombre] = valor
         self._sincronizar_json()
 
     def obtener(self, nombre):
         if not nombre in self.memoria:
-            raise Exception(f"la variable {nombre} no esta definida.")
+            raise Exception(f"La variable {nombre} no esta definida")
         return self.memoria[nombre]
     
     def eliminar(self, nombre):
         if nombre not in self.memoria:
-            raise Exception(f"La variable {nombre} no esta definida.")
+            raise Exception(f"La variable {nombre} no esta definida")
         if nombre in self.CONSTANTES:
-            raise Exception(f"La variable {nombre} no puede ser eliminada.")
+            raise Exception(f"La variable {nombre} no puede ser eliminada")
         del self.memoria[nombre]
         self._sincronizar_json()
             
