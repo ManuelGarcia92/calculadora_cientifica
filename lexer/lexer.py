@@ -22,7 +22,22 @@ class Lexer:
                 raise Exception(f"Caracter desconocido : Token {char_actual} : Columna {self.pos+1}")
         tokens.append(Token("FIN", None, columna=self.pos+1))
         return tokens
-
+    
+    def formatear_tokens(self, tokens):
+        if not tokens:
+            return ""
+        resultado = []
+        espacio_derecha = {"var", "del", "clear", ";", ","}
+        for i, token in enumerate(tokens):
+            valor = str(token.valor)
+            if valor == "None":
+                continue
+            if valor in espacio_derecha:
+                resultado.append(f"{valor} ")
+            else:
+                resultado.append(valor)
+        return "".join(resultado)
+    
     def _advance(self) -> str:
         char = self.texto[self.pos]
         self.pos += 1

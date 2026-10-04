@@ -5,38 +5,16 @@ from evaluador import Evaluador
 import persistencia
 import consola
 
-def formatear_texto(tokens):
-    if not tokens:
-        return ""
-    resultado = []
-    espacio_derecha = {";", ","}
-    for i, token in enumerate(tokens):
-        valor = str(token.valor)
-        if valor == "None":
-            continue
-        if i == 0:
-            resultado.append(valor)
-            continue
-        token_anterior = str(tokens[i - 1].valor)
-        if token_anterior in ("var", "del", "clear"):
-            resultado.append(f" {valor}")
-        elif valor in espacio_derecha:
-            resultado.append(f"{valor} ")
-        else:
-            resultado.append(valor)
-    return "".join(resultado)
-
 def ejecutar_linea(texto: str, memoria: TablaDeSimbolos):
     lexer = Lexer(texto)
     tokens = lexer.tokenizar()
     parser = Parser(tokens)
     arbol = parser.parsear()
-
     if arbol:
         evaluador = Evaluador(arbol)
         resultado = evaluador.evaluar(memoria)
         if resultado is not None:
-            texto_formateado = formatear_texto(tokens)
+            texto_formateado = lexer.formatear_tokens(tokens)
             persistencia.agregar_al_historial(texto_formateado, resultado)
             print(resultado) 
 
@@ -46,13 +24,11 @@ def calculo() -> None:
         consola.limpiar_terminal()
         print("Ingrese el comando [break] para salir.")
         memoria.imprimir_memoria()
-
         texto = consola.pedir_dato(">>> : ")
         if texto.lower() == "break":
             break
         if not texto:
             continue
-
         try:
             ejecutar_linea(texto, memoria)
         except Exception as error:
