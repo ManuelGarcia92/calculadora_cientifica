@@ -29,7 +29,7 @@ class Lexer:
             return ""
         resultado = []
         espacio_derecha = {"var", "del", "clear", ";", ","}
-        for i, token in enumerate(tokens):
+        for token in tokens:
             valor = str(token.valor)
             if valor == "None":
                 continue
