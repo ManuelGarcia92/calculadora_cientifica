@@ -20,6 +20,7 @@ class TablaDeSimbolos:
             raise Exception(f"La variable {nombre} no puede ser modificada")
         self.memoria[nombre] = valor
         self._sincronizar_json()
+        return valor
 
     def obtener(self, nombre):
         if not nombre in self.memoria:
