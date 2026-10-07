@@ -7,20 +7,20 @@ class GrammarRules:
     def parsear_instrucciones(self):
         if self.stream.match("VAR"):
             self.stream.advance()
-            instrucion = self._parsear_secuencia(self._parsear_asignacion)
+            instruccion = self._parsear_secuencia(self._parsear_asignacion)
             self.stream.consumir("PUNTO_Y_COMA", "La secuencia debe finalizar con ; ")
-            return instrucion
+            return instruccion
         
         elif self.stream.match("DEL"):
             self.stream.advance()
-            instrucion = self._parsear_secuencia(self._parsear_eliminacion)
+            instruccion = self._parsear_secuencia(self._parsear_eliminacion)
             self.stream.consumir("PUNTO_Y_COMA", "La secuencia debe finalizar con ; ")
-            return instrucion
+            return instruccion
         
         elif self.stream.match("CLEAR"):
             self.stream.advance()
-            instrucion = self._parsear_limpieza()
-            return instrucion
+            instruccion = self._parsear_limpieza()
+            return instruccion
 
         else:
             return self._expr()
@@ -61,8 +61,8 @@ class GrammarRules:
             return nodos.NodoIdentificador(token_id.valor)
         
         if self.stream.match("NUMERO"):
-            error = self.stream.advance()
-            return nodos.NodoNumero(error.valor)
+            token = self.stream.advance()
+            return nodos.NodoNumero(token.valor)
 
         if self.stream.match("ERROR"):
             error = self.stream.advance()
