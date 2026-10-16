@@ -1,5 +1,6 @@
 from enrutador import calculo, ver_historial
 import consola
+import readline
 
 def main():
     while True:

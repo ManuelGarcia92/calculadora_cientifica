@@ -9,6 +9,7 @@ class Parser:
     def parsear(self):
         instrucciones = []
         while not self.stream.match("FIN"):
+            inicio = self.stream.pos
             try:
                 instruccion = self.rules.parsear_instrucciones()
                 instrucciones.append(instruccion)
@@ -17,8 +18,7 @@ class Parser:
             except SyntaxError as error:
                 print(f"Error: {error}")
                 self.stream.sincronizar()
-
-        if self.stream.peek() and not self.stream.match("FIN"):
-            raise Exception("Quedan tokens sin procesar")
+                if self.stream.pos == inicio:
+                    self.stream.advance()
 
         return instrucciones
