@@ -25,8 +25,14 @@ def mostrar_menu() -> None:
     print("3. Salir")
     print('=' * 40)
 
+def ajustar_numero(numero, ancho):
+    numero = str(numero)
+    ancho = ancho - len(numero)
+    return numero + ancho * " "
+
 def mostrar_registro(registros: list[dict]) -> None:
+    ancho = len(str(len(registros)))
     for i, registro in enumerate(registros):
-        print(f"[{i+1}]: {registro["expresion"]} = {registro["resultado"]}")
+        print(f"[{ajustar_numero(i+1, ancho)}]: {registro["expresion"]} = {registro["resultado"]}")
     print(f"\n{'=' * 40}")
 
