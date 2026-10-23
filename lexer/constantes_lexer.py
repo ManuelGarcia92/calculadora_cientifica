@@ -1,7 +1,4 @@
 PALABRAS_RESERVADAS = {
-    "var"   : "VAR",
-    "del"   : "DEL",
-    "clear" : "CLEAR",
     "abs"   : "FUN",
     "sin"   : "FUN",
     "asin"  : "FUN",
@@ -22,10 +19,8 @@ OPERADORES_SIMPLES = {
     "%"  : "MOD",
     "("  : "PAREN_IZQ",
     ")"  : "PAREN_DER",
-    "="  : "IGUAL",
     "."  : "PUNTO",
     ","  : "COMA", 
-    ";"  : "PUNTO_Y_COMA",
 }
 
 OPERADORES_DOBLES = {

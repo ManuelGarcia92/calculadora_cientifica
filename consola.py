@@ -6,13 +6,13 @@ def pausa() -> None:
     input("Presione ENTER para continuar...")
 
 def pedir_dato(mensaje: str) -> str:
-    return input(f"\n{mensaje}").strip()
+    return input(mensaje)
 
-def mostrar_mensaje(mensaje: str) -> None:
-    print(f"\n{mensaje}")
+def imprimir(mensaje: str) -> None:
+    print(mensaje)
 
-def mostrar_error(mensaje: str) -> None:
-    print(f"\nERROR: {mensaje}")
+def imprimir_error(mensaje: str) -> None:
+    print(f"ERROR: {mensaje}")
 
 def mostrar_titulo(titulo: str) -> None:
     print(f"\n{'=' * 40}")

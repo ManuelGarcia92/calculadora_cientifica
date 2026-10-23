@@ -19,25 +19,9 @@ class Lexer:
             elif char_actual.isdigit() or char_actual == ".":
                 tokens.append(self._leer_numero())  
             else:
-                raise Exception(f"Caracter desconocido : Token {char_actual} : Columna {self.pos+1}")
-        tokens.append(Token("FIN", None, columna=self.pos+1))
+                raise Exception(f"Caracter desconocido {char_actual}")
+        tokens.append(Token("FIN", None))
         return tokens
-    
-    @staticmethod
-    def formatear_tokens(tokens):
-        if not tokens:
-            return ""
-        resultado = []
-        espacio_derecha = {"var", "del", "clear", ";", ","}
-        for i, token in enumerate(tokens):
-            valor = str(token.valor)
-            if valor == "None":
-                continue
-            if valor in espacio_derecha:
-                resultado.append(f"{valor} ")
-            else:
-                resultado.append(valor)
-        return "".join(resultado)
     
     def _advance(self) -> str:
         char = self.texto[self.pos]
@@ -48,7 +32,6 @@ class Lexer:
         return self.texto[self.pos + pasos]
  
     def _leer_numero(self) -> Token:
-        col_inicio = self.pos + 1
         contador_punto_decimal = 0
         buffer = ""
         while self.pos < len(self.texto) and (self._peek().isdigit() or self._peek() == "."):
@@ -56,41 +39,48 @@ class Lexer:
                 contador_punto_decimal += 1
             buffer += self._advance()
 
-        col_fin = self.pos
-
         if contador_punto_decimal > 1:
-            tipo_token = "ERROR"
-            valor_token = f"Número con varios puntos decimales Token {buffer} Columna : {col_inicio}-{col_fin}"
-        else:
-            tipo_token = "NUMERO"
-            valor_token = buffer
+            raise Exception(f"Número con varios puntos decimales : {buffer}")
 
-        return Token(tipo_token, valor_token, columna=f"{col_inicio}-{col_fin}")
+        return Token("NUMERO", buffer)
 
     def _leer_simbolo(self) -> Token:
         if self.pos < len(self.texto):
-            col_inicio = self.pos + 1
             if self.pos < len(self.texto) - 1 and self._peek() + self._peek(1) in OPERADORES_DOBLES:
                 valor_token = self._advance()
                 valor_token += self._advance()
                 tipo_token = OPERADORES_DOBLES[valor_token]
+
             else:
                 valor_token = self._advance()
                 tipo_token = OPERADORES_SIMPLES[valor_token]
                 
-            col_fin = self.pos
-            return Token(tipo_token, valor_token, columna=f"{col_inicio}-{col_fin}")
+            return Token(tipo_token, valor_token)
 
     def _leer_palabra(self) -> Token:
-        col_inicio = self.pos + 1
         buffer = ""
         while self.pos < len(self.texto) and (self._peek().isalnum() or self._peek() == "_"):
             buffer += self._advance()
 
         if buffer in PALABRAS_RESERVADAS:
             tipo_token = PALABRAS_RESERVADAS[buffer] 
+
         else:
             tipo_token = "IDENTIFICADOR"
 
-        col_fin = self.pos
-        return Token(tipo_token, buffer, columna=f"{col_inicio}-{col_fin}")
+        return Token(tipo_token, buffer)
+
+    @staticmethod
+    def formatear_tokens(tokens):
+        if not tokens:
+            return ""
+        resultado = []
+        for i, token in enumerate(tokens):
+            valor = str(token.valor)
+            if valor == "None":
+                continue
+            if valor == ",":
+                resultado.append(f"{valor} ")
+            else:
+                resultado.append(valor)
+        return "".join(resultado)

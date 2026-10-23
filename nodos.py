@@ -39,14 +39,7 @@ class NodoNumero:
         else:
             valor = int(self.valor)
         return valor
-    
-class NodoError:
-    def __init__(self, valor):
-        self.valor = valor
 
-    def evaluar(self, memoria):
-        raise Exception(self.valor)
-    
 class NodoPositivo:
     def __init__(self, valor):
         self.valor = valor
@@ -61,14 +54,6 @@ class NodoNegativo:
     def evaluar(self, memoria):
         return -self.valor.evaluar(memoria)
 
-class NodoAsignacion:
-    def __init__(self, nombre, valor):
-        self.nombre = nombre
-        self.valor = valor
-
-    def evaluar(self, memoria):
-        return memoria.declarar(self.nombre, self.valor.evaluar(memoria))
-    
 class NodoIdentificador:
     def __init__(self, nombre):
         self.nombre = nombre
@@ -76,13 +61,3 @@ class NodoIdentificador:
     def evaluar(self, memoria):
         return memoria.obtener(self.nombre)
 
-class NodoEliminacion:
-    def __init__(self, nombre):
-        self.clave = nombre
-
-    def evaluar(self, memoria):
-        return memoria.eliminar(self.clave)
-
-class NodoLimpieza:
-    def evaluar(self, memoria):
-        return memoria.limpiar()

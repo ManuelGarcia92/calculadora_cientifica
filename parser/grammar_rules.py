@@ -4,28 +4,7 @@ class GrammarRules:
     def __init__(self, stream):
         self.stream = stream
 
-    def parsear_instrucciones(self):
-        if self.stream.match("VAR"):
-            self.stream.advance()
-            instruccion = self._parsear_secuencia(self._parsear_asignacion)
-            self.stream.consumir("PUNTO_Y_COMA", "La secuencia debe finalizar con ; ")
-            return instruccion
-        
-        elif self.stream.match("DEL"):
-            self.stream.advance()
-            instruccion = self._parsear_secuencia(self._parsear_eliminacion)
-            self.stream.consumir("PUNTO_Y_COMA", "La secuencia debe finalizar con ; ")
-            return instruccion
-        
-        elif self.stream.match("CLEAR"):
-            self.stream.advance()
-            instruccion = self._parsear_limpieza()
-            return instruccion
-
-        else:
-            return self._expr()
-            
-    def _expr(self):
+    def expr(self):
         nodo = self._term()
         while self.stream.match("SUMA", "RESTA"):
             operador = self.stream.advance()
@@ -86,26 +65,13 @@ class GrammarRules:
         argumentos = []
         self.stream.consumir("PAREN_IZQ", "Falta el paréntesis de apertura ( en los argumentos")
         if not self.stream.match("PAREN_DER"):
-            argumentos = self._parsear_secuencia(self._expr)
+            argumentos = self._parsear_secuencia(self.expr)
         self.stream.consumir("PAREN_DER", "Falta el paréntesis de cierre ) en los argumentos")
         return argumentos
     
-    def _parsear_asignacion(self):
-        token_id = self.stream.consumir("IDENTIFICADOR", "Falta el nombre de la variable")
-        self.stream.consumir("IGUAL", "Falta el signo de asignación = ")
-        nodo = self._expr()
-        return nodos.NodoAsignacion(token_id.valor, nodo)
-    
-    def _parsear_eliminacion(self):
-        token_id = self.stream.consumir("IDENTIFICADOR", "Falta el nombre de la variable que desea eliminar")
-        return nodos.NodoEliminacion(token_id.valor)
-    
-    def _parsear_limpieza(self):
-        return nodos.NodoLimpieza()
-    
     def _parsear_parentesis(self):
         self.stream.advance()
-        nodo = self._expr()
+        nodo = self.expr()
         self.stream.consumir("PAREN_DER", "No cerraste un paréntesis")
         return nodo
     
