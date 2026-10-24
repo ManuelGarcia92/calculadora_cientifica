@@ -10,6 +10,6 @@ class Parser:
         arbol = self.rules.expr()
 
         if self.stream.peek() and not self.stream.match("FIN"):
-            raise self.stream.levantar_error("Esperaba un operador")
+            self.stream.levantar_error("Esperaba un operador")
 
         return arbol

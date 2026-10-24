@@ -19,7 +19,7 @@ class Lexer:
             elif char_actual.isdigit() or char_actual == ".":
                 tokens.append(self._leer_numero())  
             else:
-                raise Exception(f"Caracter desconocido {char_actual}")
+                raise Exception(f"Caracter desconocido : {char_actual}")
         tokens.append(Token("FIN", None))
         return tokens
     

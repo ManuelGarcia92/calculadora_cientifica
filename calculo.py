@@ -19,7 +19,7 @@ def calculo() -> None:
         try:
             texto = str(procesar_calculo(texto, memoria))
         except Exception as error:
-            consola.imprimir(f"[Error de Ejecución]: {error}.")     
+            consola.imprimir(f"[Error de Ejecución]: {error}")     
         consola.pausa()
 
 def procesar_calculo(texto: str, memoria: TablaDeSimbolos):
