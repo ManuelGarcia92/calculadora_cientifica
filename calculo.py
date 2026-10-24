@@ -6,17 +6,18 @@ import persistencia
 import consola
 
 def calculo() -> None:
+    texto = ""
     memoria = TablaDeSimbolos()
     while True:
         consola.limpiar_terminal()
         consola.imprimir("Ingrese el comando [:break] para salir.")
-        texto = consola.pedir_dato(">>> : ")
+        texto = consola.modificar_dato(">>> : ", texto)
         if texto.lower() == ":break":
             break
         if not texto:
             continue
         try:
-            procesar_calculo(texto, memoria)
+            texto = str(procesar_calculo(texto, memoria))
         except Exception as error:
             consola.imprimir(f"[Error de Ejecución]: {error}.")     
         consola.pausa()
@@ -31,5 +32,6 @@ def procesar_calculo(texto: str, memoria: TablaDeSimbolos):
         resultado = evaluador.evaluar(memoria)
         if resultado is not None:
             texto_formateado = lexer.formatear_tokens(tokens)
-            persistencia.agregar_al_historial(texto_formateado, resultado)
-            consola.imprimir(resultado) 
+            if texto_formateado != str(resultado):   
+                persistencia.agregar_al_historial(texto_formateado, resultado)
+            return resultado

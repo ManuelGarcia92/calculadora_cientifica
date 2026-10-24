@@ -7,6 +7,9 @@ class Parser:
         self.rules = GrammarRules(self.stream)
 
     def parsear(self):
-        return self.rules.expr()
+        arbol = self.rules.expr()
 
-    
+        if self.stream.peek() and not self.stream.match("FIN"):
+            raise self.stream.levantar_error("Esperaba un operador")
+
+        return arbol
