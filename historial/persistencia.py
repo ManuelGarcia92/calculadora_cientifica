@@ -1,12 +1,11 @@
 import json
 import os
 
-def ruta_actual(nombre_archivo):
-    carpeta_actual = os.path.dirname(__file__)
-    ruta_actual = os.path.join(carpeta_actual, nombre_archivo)
-    return ruta_actual
+CARPETA_ACTUAL = os.path.dirname(os.path.abspath(__file__))
 
-DIRECTORIO_DATOS = ruta_actual("data")
+CARPETA_RAIZ = os.path.dirname(CARPETA_ACTUAL)
+
+DIRECTORIO_DATOS = os.path.join(CARPETA_RAIZ, "data")
 
 def _garantizar_carpeta():
     if not os.path.exists(DIRECTORIO_DATOS):

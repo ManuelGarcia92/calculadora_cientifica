@@ -1,13 +1,13 @@
-import persistencia
-import consola
+from . import persistencia
+from interfaz import consola
 
-def historial() -> None:
+def mostrar_historial() -> None:
     while True:
         consola.limpiar_terminal()
         consola.mostrar_titulo("Registro de operaciones.")
-        historial = persistencia.cargar_historial()
-        if historial:
-            consola.mostrar_registro(historial)
+        registros = persistencia.cargar_historial()
+        if registros:
+            consola.mostrar_registro(registros)
             consola.imprimir("Ingrese el comando [:del  ] y el número de la operación para borrarla del historial.")
             consola.imprimir("Ingrese el comando [:clear] para borrar todo el historial.")
             consola.imprimir("Ingrese el comando [:break] para salir.")

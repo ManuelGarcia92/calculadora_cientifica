@@ -6,6 +6,14 @@ class Lexer:
         self.texto = texto
         self.pos = 0
 
+    def _advance(self) -> str:
+        char = self.texto[self.pos]
+        self.pos += 1
+        return char
+                
+    def _peek(self, pasos=0) -> str:
+        return self.texto[self.pos + pasos]
+    
     def tokenizar(self) -> list:
         tokens  = [] 
         while self.pos < len(self.texto):
@@ -23,14 +31,6 @@ class Lexer:
         tokens.append(Token("FIN", None))
         return tokens
     
-    def _advance(self) -> str:
-        char = self.texto[self.pos]
-        self.pos += 1
-        return char
-            
-    def _peek(self, pasos=0) -> str:
-        return self.texto[self.pos + pasos]
- 
     def _leer_numero(self) -> Token:
         contador_punto_decimal = 0
         buffer = ""
@@ -69,18 +69,3 @@ class Lexer:
             tipo_token = "IDENTIFICADOR"
 
         return Token(tipo_token, buffer)
-
-    @staticmethod
-    def formatear_tokens(tokens):
-        if not tokens:
-            return ""
-        resultado = []
-        for i, token in enumerate(tokens):
-            valor = str(token.valor)
-            if valor == "None":
-                continue
-            if valor == ",":
-                resultado.append(f"{valor} ")
-            else:
-                resultado.append(valor)
-        return "".join(resultado)

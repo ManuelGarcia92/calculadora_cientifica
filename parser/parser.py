@@ -1,15 +1,16 @@
-from .stream import TokenStream
-from .grammar_rules import GrammarRules
+from .flujo import TokenStream
+from .reglas_gramaticales import GrammarRules
+
 
 class Parser:
     def __init__(self, tokens):
-        self.stream = TokenStream(tokens)
-        self.rules = GrammarRules(self.stream)
+        self.flujo = TokenStream(tokens)
+        self.reglas = GrammarRules(self.flujo)
 
     def parsear(self):
-        arbol = self.rules.expr()
+        arbol = self.reglas.expr()
 
-        if self.stream.peek() and not self.stream.match("FIN"):
-            self.stream.levantar_error("Esperaba un operador")
+        if self.flujo.peek() and not self.flujo.match("FIN"):
+            self.flujo.levantar_error("Esperaba un operador")
 
         return arbol

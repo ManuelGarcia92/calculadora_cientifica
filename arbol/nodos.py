@@ -1,4 +1,4 @@
-from despacho import OPERACIONES, FUNCIONES
+from .despacho import OPERACIONES, FUNCIONES
 
 class NodoBinario:
     def __init__(self, operador, izquierda, derecha):
@@ -40,20 +40,18 @@ class NodoNumero:
             valor = int(self.valor)
         return valor
 
-class NodoPositivo:
-    def __init__(self, valor):
+class NodoUnario:
+    def __init__(self, signo, valor):
+        self.signo = signo
         self.valor = valor
 
     def evaluar(self, memoria):
-        return +self.valor.evaluar(memoria)
+        resultado = self.valor.evaluar(memoria)
+        if self.signo == "-":
+            return -resultado
+        else:
+            return resultado
     
-class NodoNegativo:
-    def __init__(self, valor):
-        self.valor = valor
-
-    def evaluar(self, memoria):
-        return -self.valor.evaluar(memoria)
-
 class NodoIdentificador:
     def __init__(self, nombre):
         self.nombre = nombre

@@ -1,9 +1,8 @@
-from entorno import TablaDeSimbolos
 from lexer import Lexer 
 from parser import Parser
-from evaluador import Evaluador
-import persistencia
-import consola
+from evaluacion import Evaluador, TablaDeSimbolos
+from historial import agregar_al_historial
+from interfaz import consola, formatear_tokens
 
 def calculo() -> None:
     texto = ""
@@ -14,24 +13,22 @@ def calculo() -> None:
         texto = consola.modificar_dato(">>> : ", texto)
         if texto.lower() == ":break":
             break
-        if not texto:
+        if texto.strip() == "":
             continue
         try:
-            texto = str(procesar_calculo(texto, memoria))
+            texto = str(procesar_expresion(texto, memoria))
         except Exception as error:
             consola.imprimir(f"[Error de Ejecución]: {error}")     
         consola.pausa()
 
-def procesar_calculo(texto: str, memoria: TablaDeSimbolos):
+def procesar_expresion(texto: str, memoria: TablaDeSimbolos):
     lexer = Lexer(texto)
     tokens = lexer.tokenizar()
     parser = Parser(tokens)
     arbol = parser.parsear()
-    if arbol:
-        evaluador = Evaluador(arbol)
-        resultado = evaluador.evaluar(memoria)
-        if resultado is not None:
-            texto_formateado = lexer.formatear_tokens(tokens)
-            if texto_formateado != str(resultado):   
-                persistencia.agregar_al_historial(texto_formateado, resultado)
-            return resultado
+    evaluador = Evaluador(arbol)
+    resultado = evaluador.evaluar(memoria)
+    texto_formateado = formatear_tokens(tokens)
+    if texto_formateado != str(resultado):   
+        agregar_al_historial(texto_formateado, resultado)
+    return resultado

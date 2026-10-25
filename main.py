@@ -1,6 +1,6 @@
 from calculo import calculo
-from historial import historial
-import consola
+from historial import mostrar_historial
+from interfaz import consola
 import readline
 
 def main():
@@ -15,7 +15,7 @@ def main():
         elif opcion == "1":
             calculo()
         elif opcion == "2":
-            historial()
+            mostrar_historial()
         else:
             consola.imprimir_error(f"La opción: {opcion} no existe.")
             consola.pausa()

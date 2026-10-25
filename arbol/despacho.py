@@ -1,4 +1,4 @@
-import operaciones 
+from . import operaciones
 import math
 
 OPERACIONES = {

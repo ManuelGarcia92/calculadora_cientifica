@@ -1,4 +1,4 @@
-import math 
+import math  
 
 class TablaDeSimbolos:
     def __init__(self):
