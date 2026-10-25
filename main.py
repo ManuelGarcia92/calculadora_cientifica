@@ -1,6 +1,6 @@
-from calculo import calculo
 from historial import mostrar_historial
 from interfaz import consola
+from calculo import calculo
 import readline
 
 def main():

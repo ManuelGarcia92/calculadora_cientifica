@@ -1,4 +1,4 @@
-from .evaluador import Evaluador
 from .entorno import TablaDeSimbolos
+from .evaluador import evaluar
 
-__all__ = ["Evaluador", "TablaDeSimbolos"]
+__all__ = ["evaluar", "TablaDeSimbolos"]

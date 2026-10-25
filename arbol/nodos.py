@@ -1,34 +1,5 @@
 from .despacho import OPERACIONES, FUNCIONES
 
-class NodoBinario:
-    def __init__(self, operador, izquierda, derecha):
-        self.operador = operador
-        self.izquierda = izquierda 
-        self.derecha = derecha
-
-    def evaluar(self, memoria):
-        val_izquierda = self.izquierda.evaluar(memoria)
-        val_derecha = self.derecha.evaluar(memoria)
-        resultado = OPERACIONES[self.operador](val_izquierda, val_derecha)
-        return resultado
-
-class NodoFuncion:
-    def __init__(self, operador, argumentos):
-        self.operador = operador
-        self.argumentos = argumentos
-
-    def evaluar(self, memoria):
-        valores = [valor.evaluar(memoria) for valor in self.argumentos]
-        
-        funcion = FUNCIONES.get(self.operador)
-        if not funcion:
-            raise Exception(f"Operador desconocido : {self.operador}")
-        
-        try:
-            return funcion(*valores)
-        except TypeError:
-            raise Exception(f"Número incorrecto de argumentos para {self.operador}")
-
 class NodoNumero:
     def __init__(self, valor):
         self.valor = valor
@@ -58,4 +29,36 @@ class NodoIdentificador:
 
     def evaluar(self, memoria):
         return memoria.obtener(self.nombre)
+    
+class NodoBinario:
+    def __init__(self, operador, nodo_izquierdo, nodo_derecho):
+        self.operador = operador
+        self.nodo_izquierdo = nodo_izquierdo 
+        self.nodo_derecho = nodo_derecho
+
+    def evaluar(self, memoria):
+        valor_izquierda = self.nodo_izquierdo.evaluar(memoria)
+        valor_derecha = self.nodo_derecho.evaluar(memoria)
+        resultado = OPERACIONES[self.operador](valor_izquierda, valor_derecha)
+        return resultado
+    
+class NodoFuncion:
+    def __init__(self, funcion, argumentos):
+        self.funcion = funcion
+        self.argumentos = argumentos
+
+    def evaluar(self, memoria):
+        valores = [valor.evaluar(memoria) for valor in self.argumentos]
+        
+        operacion = FUNCIONES.get(self.funcion)
+        if not operacion:
+            raise Exception(f"Función desconocida : {self.funcion}")
+        
+        try:
+            return operacion(*valores)
+        
+        except TypeError:
+            raise Exception(f"Número incorrecto de argumentos para {self.funcion}")
+
+
 

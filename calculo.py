@@ -1,8 +1,8 @@
-from lexer import Lexer 
-from parser import Parser
-from evaluacion import Evaluador, TablaDeSimbolos
-from historial import agregar_al_historial
+from evaluacion import evaluar, TablaDeSimbolos
 from interfaz import consola, formatear_tokens
+from historial import agregar_al_historial
+from parser import Parser
+from lexer import Lexer 
 
 def calculo() -> None:
     texto = ""
@@ -26,8 +26,7 @@ def procesar_expresion(texto: str, memoria: TablaDeSimbolos):
     tokens = lexer.tokenizar()
     parser = Parser(tokens)
     arbol = parser.parsear()
-    evaluador = Evaluador(arbol)
-    resultado = evaluador.evaluar(memoria)
+    resultado = evaluar(arbol, memoria)
     texto_formateado = formatear_tokens(tokens)
     if texto_formateado != str(resultado):   
         agregar_al_historial(texto_formateado, resultado)

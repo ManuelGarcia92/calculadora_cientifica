@@ -1,5 +1,5 @@
-from . import persistencia
 from interfaz import consola
+from . import persistencia
 
 def mostrar_historial() -> None:
     while True:
@@ -20,7 +20,7 @@ def mostrar_historial() -> None:
             break
         if comando:
             if not procesar_comando(comando):
-                consola.imprimir_error(f"El comando {comando} no existe.")
+                consola.imprimir_error(f"El comando [{comando}] no es válido.")
             consola.pausa()
 
 def procesar_comando(texto: str) -> bool:
@@ -28,25 +28,30 @@ def procesar_comando(texto: str) -> bool:
     if entrada == ":clear":
         comando_clear()
         return True
-    
-    if entrada.startswith(":del "):
-        comando_del(entrada)
-        return True
-    
+            
+    elif entrada.startswith(":del "):
+        if comando_del(entrada):
+            return True
+        
     return False
 
-def comando_clear():
-    persistencia.borrar_historial()
-    consola.imprimir("Historial borrado con éxito.")
-
-def comando_del(entrada):
+def comando_clear() -> None:
+    if consola.confirmacion("¿Borrar todo el historial?"):
+        persistencia.borrar_historial()
+        consola.imprimir("Historial eliminado con éxito.")
+          
+def comando_del(entrada) -> bool:
     partes = entrada.split()
     if len(partes) == 2 and partes[1].isdigit():
         num_registro = int(partes[1])
-        if persistencia.eliminar_registro_historial(num_registro):
-            consola.imprimir(f"Registro [{num_registro}] eliminado.")
-        else:
-            consola.imprimir(f"El registro [{num_registro}] no existe.")
+        if consola.confirmacion(f"¿Borrar el registro [{num_registro}]?"):
+            if persistencia.eliminar_registro_historial(num_registro):
+                consola.imprimir(f"Registro [{num_registro}] eliminado con éxito.")
+                
+            else:
+                consola.imprimir_error(f"El registro [{num_registro}] no existe.")
 
-
+        return True
+        
+    return False
 

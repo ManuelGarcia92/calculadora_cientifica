@@ -1,4 +1,4 @@
-class TokenStream:
+class FlujoDeTokens:
     def __init__(self, tokens):
         self.tokens = tokens
         self.pos = 0
@@ -6,27 +6,27 @@ class TokenStream:
     def levantar_error(self, mensaje):
         raise Exception(mensaje)
     
-    def peek(self):
+    def mirar(self):
         if self.pos < len(self.tokens):
             return self.tokens[self.pos]
         return None
             
-    def advance(self):
-        token_actual = self.peek()
+    def avanzar(self):
+        token_actual = self.mirar()
         if token_actual:
             self.pos += 1
             return token_actual
         return None
             
-    def match(self, *tipos):
-        token_actual = self.peek()
+    def coincide(self, *tipos):
+        token_actual = self.mirar()
         if token_actual and token_actual.tipo in tipos:
             return token_actual
         return None
     
     def consumir(self, tipo_esperado, mensaje_error):
-        if self.match(tipo_esperado):
-            return self.advance()
+        if self.coincide(tipo_esperado):
+            return self.avanzar()
         self.levantar_error(mensaje_error)   
 
  

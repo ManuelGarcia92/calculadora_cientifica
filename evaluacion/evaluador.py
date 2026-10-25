@@ -1,12 +1,8 @@
-class Evaluador:
-    def __init__(self, instruccion):
-        self.instruccion = instruccion
-
-    def evaluar(self, memoria):
-        resultado = None
-        if self.instruccion is not None:
-            resultado = self.instruccion.evaluar(memoria)
-        return resultado
+def evaluar(arbol, memoria):
+    resultado = None
+    if arbol is not None:
+        resultado = arbol.evaluar(memoria)
+    return resultado
        
 
 

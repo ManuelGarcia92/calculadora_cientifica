@@ -1,5 +1,5 @@
-from prompt_toolkit import prompt
 from .formato import ajustar_ancho
+from prompt_toolkit import prompt
 
 def limpiar_terminal() -> None:
     import os
@@ -37,3 +37,17 @@ def mostrar_registro(registros: list[dict]) -> None:
         print(f"[{ajustar_ancho(i+1, ancho)}]: {registro["expresion"]} = {registro["resultado"]}")
     print(f"\n{'=' * 40}")
 
+def confirmacion(mensaje="Está seguro de esta decisión?") -> bool:
+    while True:
+        limpiar_terminal()
+        opcion = pedir_dato(f"{mensaje}, conteste con (si/no) : ")
+        opcion = opcion.strip().lower()
+        if opcion == "si":
+            return True
+        
+        elif opcion == "no":
+            return False
+        
+        else:
+            imprimir_error(f"La opción {opcion} no es válida, conteste con (si/no)")
+            pausa()

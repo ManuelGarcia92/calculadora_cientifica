@@ -6,66 +6,59 @@ class Lexer:
         self.texto = texto
         self.pos = 0
 
-    def _advance(self) -> str:
-        char = self.texto[self.pos]
+    def _avanzar(self) -> str:
+        caracter = self.texto[self.pos]
         self.pos += 1
-        return char
+        return caracter
                 
-    def _peek(self, pasos=0) -> str:
+    def _mirar(self, pasos=0) -> str:
         return self.texto[self.pos + pasos]
     
-    def tokenizar(self) -> list:
-        tokens  = [] 
-        while self.pos < len(self.texto):
-            char_actual = self._peek()
-            if char_actual.isspace():
-                self._advance()
-            elif char_actual.isalpha() or char_actual == "_":
-                tokens.append(self._leer_palabra())
-            elif char_actual in OPERADORES_SIMPLES:
-                tokens.append(self._leer_simbolo())
-            elif char_actual.isdigit() or char_actual == ".":
-                tokens.append(self._leer_numero())  
-            else:
-                raise Exception(f"Caracter desconocido : {char_actual}")
-        tokens.append(Token("FIN", None))
-        return tokens
-    
     def _leer_numero(self) -> Token:
-        contador_punto_decimal = 0
+        contador_de_puntos_decimales = 0
         buffer = ""
-        while self.pos < len(self.texto) and (self._peek().isdigit() or self._peek() == "."):
-            if self._peek() == ".":
-                contador_punto_decimal += 1
-            buffer += self._advance()
-
-        if contador_punto_decimal > 1:
+        while self.pos < len(self.texto) and (self._mirar().isdigit() or self._mirar() == "."):
+            if self._mirar() == ".":
+                contador_de_puntos_decimales += 1
+            buffer += self._avanzar()
+        if contador_de_puntos_decimales > 1:
             raise Exception(f"Número con varios puntos decimales : {buffer}")
-
         return Token("NUMERO", buffer)
 
     def _leer_simbolo(self) -> Token:
         if self.pos < len(self.texto):
-            if self.pos < len(self.texto) - 1 and self._peek() + self._peek(1) in OPERADORES_DOBLES:
-                valor_token = self._advance()
-                valor_token += self._advance()
+            if self.pos < len(self.texto) - 1 and self._mirar() + self._mirar(1) in OPERADORES_DOBLES:
+                valor_token = self._avanzar()
+                valor_token += self._avanzar()
                 tipo_token = OPERADORES_DOBLES[valor_token]
-
             else:
-                valor_token = self._advance()
+                valor_token = self._avanzar()
                 tipo_token = OPERADORES_SIMPLES[valor_token]
-                
             return Token(tipo_token, valor_token)
 
     def _leer_palabra(self) -> Token:
         buffer = ""
-        while self.pos < len(self.texto) and (self._peek().isalnum() or self._peek() == "_"):
-            buffer += self._advance()
-
+        while self.pos < len(self.texto) and (self._mirar().isalnum() or self._mirar() == "_"):
+            buffer += self._avanzar()
         if buffer in PALABRAS_RESERVADAS:
             tipo_token = PALABRAS_RESERVADAS[buffer] 
-
         else:
             tipo_token = "IDENTIFICADOR"
-
         return Token(tipo_token, buffer)
+
+    def tokenizar(self) -> list:
+        tokens  = [] 
+        while self.pos < len(self.texto):
+            caracter_actual = self._mirar()
+            if caracter_actual.isspace():
+                self._avanzar()
+            elif caracter_actual.isalpha() or caracter_actual == "_":
+                tokens.append(self._leer_palabra())
+            elif caracter_actual in OPERADORES_SIMPLES:
+                tokens.append(self._leer_simbolo())
+            elif caracter_actual.isdigit() or caracter_actual == ".":
+                tokens.append(self._leer_numero())  
+            else:
+                raise Exception(f"Caracter desconocido : {caracter_actual}")
+        tokens.append(Token("FIN", None))
+        return tokens

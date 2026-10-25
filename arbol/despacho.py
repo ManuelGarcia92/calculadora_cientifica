@@ -15,11 +15,11 @@ OPERACIONES = {
 FUNCIONES = {
     "abs"  : lambda x: abs(x),
     "sin"  : lambda x: math.sin(x),
-    "asin" : lambda x: math.asin(x),
+    "asin" : lambda x: operaciones.arcoseno(x),
     "cos"  : lambda x: math.cos(x),
-    "acos" : lambda x: math.acos(x),  
+    "acos" : lambda x: operaciones.arcocoseno(x),  
     "tan"  : lambda x: math.tan(x), 
     "atan" : lambda x: math.atan(x), 
-    "ln"   : lambda x: math.log(x), 
-    "log"  : lambda x, base=10: math.log(x, base), 
+    "ln"   : lambda x: operaciones.ln(x), 
+    "log"  : lambda x, base: operaciones.logaritmo(x, base), 
 }
