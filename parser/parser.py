@@ -1,5 +1,5 @@
 from .reglas_gramaticales import ReglasGramaticales
-from .flujo import FlujoDeTokens
+from .flujo_de_tokens import FlujoDeTokens
 
 class Parser:
     def __init__(self, tokens):
