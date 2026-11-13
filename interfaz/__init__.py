@@ -1,4 +1,4 @@
 from .formato import formatear_tokens
-from . import consola
+from . import interfaz
 
-__all__ = ["formatear_tokens", "consola"]
+__all__ = ["formatear_tokens", "interfaz"]
